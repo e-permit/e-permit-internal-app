@@ -1,0 +1,13 @@
+{
+  "title": "Sign in to e-permit",
+  "signout_title": "Sign out",
+  "api_uri_title": "epermit api endpoint",
+  "api_uri_required_message": "Api uri is required",
+  "permit_number": "Permit Number",
+  "country_title_uz": "Uzbekistan",
+  "country_title_tr": "Türkiye",
+  "country_title_ru": "Russia",
+  "create_new_authority_header": "Create a new authority",
+  "create_new_submit": "Create",
+  "create_new_cancel": "Cancel"
+}
