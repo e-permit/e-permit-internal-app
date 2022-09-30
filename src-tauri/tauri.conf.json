@@ -13,7 +13,7 @@
       "http": {
         "all": true,
         "request": true,
-        "scope": ["https://*", "http://*"]
+        "scope": ["https://**", "http://**"]
       }
     },
     "bundle": {

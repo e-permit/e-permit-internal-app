@@ -68,7 +68,7 @@ export default function Login() {
         setError("serverError", { message: "Login attempt failed!" + JSON.stringify(res) });
       }
     } catch (e) {
-      alert(JSON.stringify(e));
+      alert("Error occured!" + JSON.stringify(e));
     }
 
   }
