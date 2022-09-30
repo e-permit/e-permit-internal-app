@@ -27,6 +27,8 @@ import { useTranslation } from "react-i18next";
 import SelectLang from "./SelectLang";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
+import axios from "axios";
+import axiosTauriAdapter from 'axios-tauri-api-adapter';
 type LoginForm = {
   username: string;
   password: string;
@@ -49,18 +51,21 @@ export default function Login() {
       window.btoa(form.username + ":" + form.password);
     const httpPrefix = isHttps ? "https://" : "http://";
     const apiUri = httpPrefix + form.apiUri;
+    const axiosInstance =  axios.create({
+      adapter: axiosTauriAdapter,
+      baseURL: apiUri,
+      headers: {
+        Authorization: "Basic " + accessToken
+      }
+    });
     try {
-      const res = await fetch(apiUri, {
-        mode: "cors",
-        headers: { Authorization: "Basic " + accessToken }
-      });
-      if (res.ok) {
-        const json = await res.json();
+      const res = await axiosInstance.get("/");
+      if (res.status == 200) {
         let user = {
           accessToken,
           apiUri: apiUri,
-          code: json.authority,
-          roles: json.roles,
+          code: res.data.authority,
+          roles: res.data.roles,
         };
         setUser(user);
       } else {
