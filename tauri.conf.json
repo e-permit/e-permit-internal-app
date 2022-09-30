@@ -9,9 +9,7 @@
     },
     "tauri": {
         "allowlist": {
-            "http": {
-                "all": true
-            }
+            "all": true
         },
         "bundle": {
             "identifier": "epermit.internal.app",
