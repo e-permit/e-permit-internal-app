@@ -1,5 +1,9 @@
 import { useAuth } from "./RequireAuth";
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   FormErrorMessage,
   Icon,
   InputGroup,
@@ -42,7 +46,7 @@ export default function Login() {
   } = useForm<LoginForm>();
   async function signIn(form: LoginForm) {
     const accessToken =
-       window.btoa(form.username + ":" + form.password);
+      window.btoa(form.username + ":" + form.password);
     const httpPrefix = isHttps ? "https://" : "http://";
     const apiUri = httpPrefix + form.apiUri;
     const res = await fetch(apiUri, {
@@ -68,73 +72,79 @@ export default function Login() {
 
   return (
     <div >
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} minW={"md"} py={12} px={6}>
-        <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>{t("page_title")}</Heading>
-          <Text fontSize={"lg"} color={"gray.600"} as="span">
-            {t("page_description")} <SelectLang />
-          </Text>
-        </Stack>
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
-          boxShadow={"lg"}
-          p={8}
-        >
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={4}>
-              <FormControl id="api_uri">
-                <InputGroup size="md">
-                  <InputLeftAddon
-                    children={isHttps ? "https://" : "http://"}
-                    px={"5px"}
-                    onClick={() => setIsHttps(!isHttps)}
-                  />
+      <Flex
+        minH={"100vh"}
+        align={"center"}
+        justify={"center"}
+        bg={useColorModeValue("gray.50", "gray.800")}
+      >
+        <Stack spacing={8} mx={"auto"} maxW={"lg"} minW={"md"} py={12} px={6}>
+          <Stack align={"center"}>
+            <Heading fontSize={"4xl"}>{t("page_title")}</Heading>
+            <Text fontSize={"lg"} color={"gray.600"} as="span">
+              {t("page_description")} <SelectLang />
+            </Text>
+          </Stack>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "gray.700")}
+            boxShadow={"lg"}
+            p={8}
+          >
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack spacing={4}>
+                <FormControl id="api_uri">
+                  <InputGroup size="md">
+                    <InputLeftAddon
+                      children={isHttps ? "https://" : "http://"}
+                      px={"5px"}
+                      onClick={() => setIsHttps(!isHttps)}
+                    />
+                    <Input
+                      placeholder={t("common:api_uri_title")}
+                      {...register("apiUri")}
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl id="username">
+                  <FormLabel> {t("username_title")}</FormLabel>
+                  <Input {...(register("username"))} />
+                </FormControl>
+                <FormControl id="password">
+                  <FormLabel> {t("password_title")}</FormLabel>
                   <Input
-                    placeholder={t("common:api_uri_title")}
-                    {...register("apiUri")}
+                    type="password"
+                    {...(register("password"))}
                   />
-                </InputGroup>
-              </FormControl>
-              <FormControl id="username">
-                <FormLabel> {t("username_title")}</FormLabel>
-                <Input {...(register("username"))} />
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel> {t("password_title")}</FormLabel>
-                <Input
-                  type="password"
-                  {...(register("password"))}
-                />
-              </FormControl>
-              <FormErrorMessage>
-                {errors.serverError && errors.serverError.message}
-              </FormErrorMessage>
-              <Stack spacing={10}>
-                <Button
-                  type="submit"
-                  leftIcon={<Icon as={MdLogin} />}
-                  isLoading={isSubmitting}
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500"
-                  }}
-                >
-                  {t("signin_title")}
-                </Button>
+                </FormControl>
+                {errors.serverError && (
+                  <Alert status="error" mt={"20px"}>
+                    <AlertIcon />
+                    <AlertTitle>Server Error</AlertTitle>
+                    <AlertDescription>
+                      {errors.serverError.message}
+                    </AlertDescription>
+                  </Alert>
+                )}
+                <Stack spacing={10}>
+                  <Button
+                    type="submit"
+                    leftIcon={<Icon as={MdLogin} />}
+                    isLoading={isSubmitting}
+                    bg={"blue.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "blue.500"
+                    }}
+                  >
+                    {t("signin_title")}
+                  </Button>
+                </Stack>
               </Stack>
-            </Stack>
-          </form>
-        </Box>
-      </Stack>
-    </Flex>
+            </form>
+          </Box>
+        </Stack>
+      </Flex>
     </div>
   );
 }
