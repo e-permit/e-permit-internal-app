@@ -1,7 +1,9 @@
 {
     "build": {
-        "distDir": "./dist",
-        "beforeBuildCommand": "yarn build"
+        "beforeBuildCommand": "",
+        "beforeDevCommand": "",
+        "devPath": "./build",
+        "distDir": "./build"
     },
     "package": {
         "productName": "e-permit-internal-app",
