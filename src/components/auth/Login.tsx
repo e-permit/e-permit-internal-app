@@ -49,24 +49,28 @@ export default function Login() {
       window.btoa(form.username + ":" + form.password);
     const httpPrefix = isHttps ? "https://" : "http://";
     const apiUri = httpPrefix + form.apiUri;
-    const res = await fetch(apiUri, {
-      mode: "cors",
-      headers: { Authorization: "Basic " + accessToken }
-    });
-    if (res.ok) {
-      const json = await res.json();
-      let user = {
-        accessToken,
-        apiUri: apiUri,
-        code: json.authority,
-        authorities: json.authorities,
-        roles: json.roles,
-        selectedAuthority: json.authorities?.length ? json.authorities[0] : null
-      };
-      setUser(user);
-    } else {
-      setError("serverError", { message: "Login attempt failed!" + JSON.stringify(res) });
+    try {
+      const res = await fetch(apiUri, {
+        mode: "cors",
+        headers: { Authorization: "Basic " + accessToken }
+      });
+      if (res.ok) {
+        const json = await res.json();
+        let user = {
+          accessToken,
+          apiUri: apiUri,
+          code: json.authority,
+          roles: json.roles,
+        };
+        setUser(user);
+      } else {
+        alert(JSON.stringify(res));
+        setError("serverError", { message: "Login attempt failed!" + JSON.stringify(res) });
+      }
+    } catch (e) {
+      alert(JSON.stringify(e));
     }
+
   }
   const onSubmit: SubmitHandler<LoginForm> = (data) => signIn(data);
 
@@ -102,19 +106,19 @@ export default function Login() {
                     />
                     <Input
                       placeholder={t("common:api_uri_title")}
-                      {...register("apiUri")}
+                      {...register("apiUri", { required: true })}
                     />
                   </InputGroup>
                 </FormControl>
                 <FormControl id="username">
                   <FormLabel> {t("username_title")}</FormLabel>
-                  <Input {...(register("username"))} />
+                  <Input {...(register("username", { required: true }))} />
                 </FormControl>
                 <FormControl id="password">
                   <FormLabel> {t("password_title")}</FormLabel>
                   <Input
                     type="password"
-                    {...(register("password"))}
+                    {...(register("password", { required: true }))}
                   />
                 </FormControl>
                 {errors.serverError && (
