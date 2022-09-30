@@ -1,8 +1,6 @@
 {
     "build": {
-        "beforeBuildCommand": "",
-        "beforeDevCommand": "",
-        "devPath": "./build",
+        "beforeBuildCommand": "npm run build",
         "distDir": "./build"
     },
     "package": {
