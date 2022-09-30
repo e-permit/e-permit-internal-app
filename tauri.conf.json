@@ -1,7 +1,7 @@
 {
     "build": {
         "beforeBuildCommand": "",
-        "distDir": "./build"
+        "distDir": "./dist"
     },
     "package": {
         "productName": "e-permit-internal-app",
