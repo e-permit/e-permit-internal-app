@@ -67,13 +67,14 @@ export default function Login() {
   const onSubmit: SubmitHandler<LoginForm> = (data) => signIn(data);
 
   return (
+    <div >
     <Flex
       minH={"100vh"}
       align={"center"}
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
     >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} minW={"md"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>{t("page_title")}</Heading>
           <Text fontSize={"lg"} color={"gray.600"} as="span">
@@ -134,5 +135,6 @@ export default function Login() {
         </Box>
       </Stack>
     </Flex>
+    </div>
   );
 }

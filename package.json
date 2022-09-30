@@ -1,7 +1,7 @@
 {
   "name": "e-permit-internal-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "E-Permit Internal Application",
   "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {
