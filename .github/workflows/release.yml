@@ -64,8 +64,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        bundleIdentifier: epermit.internal.app
-        configPath: "./tauri.conf.json"
         releaseId: ${{ needs.create-release.outputs.release_id }}
 
    publish-release:
