@@ -65,7 +65,7 @@ export default function Login() {
       };
       setUser(user);
     } else {
-      setError("serverError", { message: "Login attempt failed!" });
+      setError("serverError", { message: "Login attempt failed!" + JSON.stringify(res) });
     }
   }
   const onSubmit: SubmitHandler<LoginForm> = (data) => signIn(data);
