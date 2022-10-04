@@ -52,12 +52,14 @@ export default function Login() {
     const httpPrefix = isHttps ? "https://" : "http://";
     const apiUri = httpPrefix + form.apiUri;
     const axiosInstance =  axios.create({
-      adapter: axiosTauriAdapter,
       baseURL: apiUri,
       headers: {
         Authorization: "Basic " + accessToken
       }
     });
+    if ((window as any).__TAURI_IPC__) {
+       axiosInstance.defaults.adapter = axiosTauriAdapter;
+    }
     try {
       const res = await axiosInstance.get("/");
       if (res.status == 200) {

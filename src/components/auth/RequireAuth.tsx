@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import localForage from "localforage";
 import { ReactNode } from "react";
 import axios, { AxiosInstance } from "axios";
+import axiosTauriAdapter from 'axios-tauri-api-adapter';
 
 interface AuthProps {
   children?: ReactNode;
@@ -31,13 +32,17 @@ const RequireAuth = ({ children }: AuthProps) => {
     }
   }
   function resolveAxios() {
-    return axios.create({
+    const axiosInstance = axios.create({
       baseURL: user?.apiUri,
       headers: {
         "Content-type": "application/json",
         Authorization: "Basic " + user?.accessToken
       }
     });
+    if ((window as any).__TAURI_IPC__) {
+      axiosInstance.defaults.adapter = axiosTauriAdapter;
+    }
+    return axiosInstance;
   }
   useEffect(() => {
     fetchUser();
