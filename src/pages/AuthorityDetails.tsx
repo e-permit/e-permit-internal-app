@@ -1,24 +1,14 @@
+import { useState } from "react";
 import {
   Box,
   Divider,
-  Heading,
   HStack,
   List,
-  ListIcon,
   ListItem,
   Select,
   SimpleGrid,
   Spinner,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
   useColorModeValue
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -31,9 +21,13 @@ import PermitList from "../components/permit/PermitList";
 
 export default function AuthorityDetails() {
   const navigate = useNavigate();
-  const { resolveAxios } = useAuth();
+  const { resolveAxios, user } = useAuth();
   const { t } = useTranslation();
   const params = useParams();
+  const [issuer, setIssuer] = useState(user?.code);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const authorityTitle = t(`country_title_${user?.code.toLowerCase()}`);
+  const selectedAuthorityTitle = t(`country_title_${params.code?.toLowerCase()}`);
   const getAuthority = async (code: string | undefined) => {
     const { data } = await resolveAxios()?.get(`/authorities/${code}`);
     return data;
@@ -63,8 +57,8 @@ export default function AuthorityDetails() {
         <Box>
           <HStack spacing="10px">
             <Select size="sm" maxW="200px">
-              <option value="option1">{"Türkiye -> Uzbeistan"}</option>
-              <option value="option1">{"Uzbeistan -> Türkiye"} </option>
+              <option value={user?.code}>{`${authorityTitle} -> ${selectedAuthorityTitle}`}</option>
+              <option value={params.code}>{`${selectedAuthorityTitle} -> ${authorityTitle}`} </option>
             </Select>
           </HStack>
         </Box>
@@ -72,17 +66,17 @@ export default function AuthorityDetails() {
         <Box>
           <HStack spacing="10px">
             <Select size="sm" maxW="130px">
-              <option value="option1">Biliteral</option>
-              <option value="option2">Transit</option>
-              <option value="option3">Third Country</option>
+              <option value="BILITERAL">Biliteral</option>
+              <option value="TRANSIT">Transit</option>
+              <option value="THIRDCOUNTRY">Third Country</option>
             </Select>
           </HStack>
         </Box>
         <Box>
           <HStack spacing="10px">
             <Select size="sm" maxW="80px">
-              <option value="option1">2022</option>
-              <option value="option2">2023</option>
+              <option value={year}>{year}</option>
+              <option value={year + 1}>{year + 1}</option>
             </Select>
           </HStack>
         </Box>

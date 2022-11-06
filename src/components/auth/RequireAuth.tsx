@@ -23,10 +23,10 @@ export const AuthContext = createContext<{
 }>({ user: null, setUser: () => null, resolveAxios: () => axios.create() });
 
 const RequireAuth = ({ children }: AuthProps) => {
-  const STORE_KEY: string = "user";
+  const STORE_KEY = "user";
   const [user, setUser] = useState<User | null>(null);
   async function fetchUser() {
-    let persistedUser = await localForage.getItem<User>(STORE_KEY);
+    const persistedUser = await localForage.getItem<User>(STORE_KEY);
     if (persistedUser) {
       setUser(persistedUser);
     }

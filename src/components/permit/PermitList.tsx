@@ -12,12 +12,12 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../auth/RequireAuth";
 type Permit = {
-    permit_id: string;
-    issued_at: string;
-    expire_at: string;
-    plate_number: string;
-    company_id: string;
-    company_name: string;
+    "permit_id": string;
+    "issued_at": string;
+    "expire_at": string;
+    "plate_number": string;
+    "company_id": string;
+    "company_name": string;
 }
 
 export default function PermitList() {
