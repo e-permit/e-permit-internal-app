@@ -27,6 +27,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../components/auth/RequireAuth";
 import CreateQuota from "../components/authority/CreateQuota";
 import FlagIcon from "../components/icons/flags/FlagIcon";
+import PermitList from "../components/permit/PermitList";
 
 export default function AuthorityDetails() {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ export default function AuthorityDetails() {
       </SimpleGrid>
 
       <Divider my={"20px"} />
-      <List spacing={5}>
+      <List spacing={5} ml={5}>
         <ListItem>
           <SimpleGrid columns={4}>
             <Text as="span" fontWeight={"500"}>
@@ -104,6 +105,7 @@ export default function AuthorityDetails() {
             </Text>
             <Text as={"span"}>{"1000"}</Text>
             <Text as={"span"}>{"1-100, 101-1000"}</Text>
+            <CreateQuota year={2022} typ="BILITERAL" />
           </SimpleGrid>{" "}
         </ListItem>
         <ListItem>
@@ -123,7 +125,8 @@ export default function AuthorityDetails() {
           </SimpleGrid>{" "}
         </ListItem>
       </List>
-      <CreateQuota year={2022} typ="BILITERAL" />
+
+      <PermitList />
     </Box>
   );
 }

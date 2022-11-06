@@ -35,7 +35,7 @@ export const handlers = [
     };
     return res(ctx.json(authority));
   }),
-  rest.get("/api/permits/:id", (req, res, ctx) => {
+  rest.get("/api/permits/find/:id", (req, res, ctx) => {
     return res(
       ctx.json({
         issuer: "UZ",
@@ -48,6 +48,23 @@ export const handlers = [
         plate_number: "06TEST1234",
         company_id: "123456",
         company_name: "Test com"
+      })
+    );
+  }),
+
+  rest.get("/api/permits", (req, res, ctx) => {
+    return res(
+      ctx.json({
+        page_count: 2,
+        rows:
+          [{
+            permit_id: "TR-UZ-2022-1-1",
+            issued_at: "03/03/2022",
+            expire_at: "31/01/2023",
+            plate_number: "06TEST1234",
+            company_id: "123456",
+            company_name: "Test com"
+          }]
       })
     );
   })

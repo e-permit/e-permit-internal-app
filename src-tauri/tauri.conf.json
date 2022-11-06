@@ -1,5 +1,7 @@
 {
   "build": {
+    "devPath": "http://localhost:3000",
+    "beforeDevCommand": "npm run start",
     "beforeBuildCommand": "npm run build",
     "distDir": "../build"
   },
