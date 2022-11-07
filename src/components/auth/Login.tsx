@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import SelectLang from "./SelectLang";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import axiosTauriAdapter from 'axios-tauri-api-adapter';
 type LoginForm = {
   username: string;
@@ -35,6 +35,10 @@ type LoginForm = {
   apiUri: string;
   serverError: void;
 };
+
+async function loadAuthorities(axiosInstance: AxiosInstance){
+
+}
 
 export default function Login() {
   const { t } = useTranslation(["signin", "common"]);

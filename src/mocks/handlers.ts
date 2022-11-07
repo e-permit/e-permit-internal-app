@@ -53,18 +53,29 @@ export const handlers = [
   }),
 
   rest.get("/api/permits", (req, res, ctx) => {
+    const page = req.url.searchParams.get('page')
+    let content = [{
+      permit_id: "TR-UZ-2022-1-1",
+      issued_at: "03/03/2022",
+      expire_at: "31/01/2023",
+      plate_number: "06TEST1234",
+      company_id: "123456",
+      company_name: "Test com"
+    }];
+    if(page === "1"){
+      content =[{
+        permit_id: "TR-UZ-2022-1-2",
+        issued_at: "03/03/2022",
+        expire_at: "31/01/2023",
+        plate_number: "06TEST1234",
+        company_id: "123456",
+        company_name: "Test com"
+      }]
+    }
     return res(
       ctx.json({
-        page_count: 2,
-        rows:
-          [{
-            permit_id: "TR-UZ-2022-1-1",
-            issued_at: "03/03/2022",
-            expire_at: "31/01/2023",
-            plate_number: "06TEST1234",
-            company_id: "123456",
-            company_name: "Test com"
-          }]
+        total_pages: 2,
+        content: content     
       })
     );
   })

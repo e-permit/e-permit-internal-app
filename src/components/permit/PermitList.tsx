@@ -8,7 +8,7 @@ import {
     ColumnDef,
     flexRender,
 } from '@tanstack/react-table';
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../auth/RequireAuth";
 type Permit = {
@@ -20,36 +20,45 @@ type Permit = {
     "company_name": string;
 }
 
-export default function PermitList() {
+export interface PermitListProps {
+    "issuer": string | undefined;
+    "issued_for": string | undefined;
+    "permit_type": string;
+    "permit_year": number;
+}
+
+export default function PermitList({ props }: { props: PermitListProps }) {
+    const { t } = useTranslation(["permit"]);
     const columns = useMemo<ColumnDef<Permit>[]>(
         () => [{
             accessorKey: 'permit_id',
-            header: () => <span>Id</span>,
+            header: () => <span>{t("permit_id_label")}</span>,
+            width: 240,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'issued_at',
-            header: () => <span>Issued At</span>,
+            header: () => <span>{t("issued_at_label")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'expire_at',
-            header: () => <span>Expire At</span>,
+            header: () => <span>{t("expire_at_label")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'plate_number',
-            header: () => <span>Plate Number</span>,
+            header: () => <span>{t("plate_number_label")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'company_name',
-            header: () => <span>Company Name</span>,
+            header: () => <span>{t("company_name_label")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'company_id',
-            header: () => <span>Company Id</span>,
+            header: () => <span>{t("company_id_label")}</span>,
             footer: props => props.column.id,
         }
         ],
@@ -60,20 +69,6 @@ export default function PermitList() {
             pageIndex: 0,
             pageSize: 10,
         })
-
-    const { resolveAxios } = useAuth();
-    const { t } = useTranslation();
-    const getPermits = async () => {
-        const { data } = await resolveAxios()?.get(`/permits/`);
-        return data;
-    };
-
-    const { data, error, isFetching } = useQuery(["permits"], () =>
-        getPermits()
-    );
-
-    const defaultData = useMemo(() => [], [])
-
     const pagination = useMemo(
         () => ({
             pageIndex,
@@ -81,11 +76,30 @@ export default function PermitList() {
         }),
         [pageIndex, pageSize]
     )
+    const fetchPermitsOptions = {
+        page: pageIndex,
+        issuer: props.issuer,
+        issued_for: props.issued_for,
+        permit_year: props.permit_year,
+        permit_type: props.permit_type
+    }
+    const { resolveAxios } = useAuth();
+    const getPermits = async (options: any) => {
+        console.log(options);
+        const { data } = await resolveAxios()?.get(
+            `/permits?page=${options.page}&&issuer=${options.issuer}` +
+            `&&issued_for=${options.issued_for}&&permit_year=${options.permit_year}&&permit_type=${options.permit_type}`);
+        return data;
+    };
+
+    const { data, error, isFetching } = useQuery(["permits", fetchPermitsOptions], () =>
+        getPermits(fetchPermitsOptions)
+    );
 
     const table = useReactTable({
-        data: data?.rows ?? [],
+        data: data?.content ?? [],
         columns,
-        pageCount: data?.page_count ?? -1,
+        pageCount: data?.total_pages ?? -1,
         state: {
             pagination,
         },
@@ -105,7 +119,7 @@ export default function PermitList() {
             mb={"4"}
             mt={"5"}
         >
-            Permits
+            {t("permit_list_label")}
         </Text>
         <Table>
             <Thead>
@@ -143,7 +157,7 @@ export default function PermitList() {
         </Table>
         <Flex justifyContent="space-between" m={4} alignItems="center">
             <Flex>
-                <Tooltip label="Previous Page">
+                <Tooltip label={t("previous_page_text")}>
                     <IconButton
                         aria-label="prev"
                         onClick={() => table.previousPage()}
@@ -174,7 +188,7 @@ export default function PermitList() {
             </Flex>
 
             <Flex>
-                <Tooltip label="Next Page">
+                <Tooltip label={t("next_page_text")}>
                     <IconButton
                         aria-label="next"
                         onClick={() => table.nextPage()}

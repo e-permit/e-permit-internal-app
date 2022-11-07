@@ -9,5 +9,7 @@
   "country_title_ru": "Russia",
   "create_new_authority_header": "Create a new authority",
   "create_new_submit": "Create",
-  "create_new_cancel": "Cancel"
+  "create_new_cancel": "Cancel",
+  "next_page_text": "Next Page",
+  "previous_page_text": "Previous Page"
 }

@@ -1,17 +1,26 @@
 import { useTranslation } from "react-i18next";
 
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
+  Button,
   Divider,
   HStack,
   List,
   ListItem,
   SimpleGrid,
   Text,
-  useColorModeValue
+  useColorModeValue,
+  useDisclosure
 } from "@chakra-ui/react";
 import FlagIcon from "../icons/flags/FlagIcon";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 export interface PermitViewProps {
   issuer: string;
@@ -46,7 +55,7 @@ export default function PermitView({ permit }: { permit: PermitViewProps }) {
           textTransform={"uppercase"}
           mb={"4"}
         >
-          Permit Details
+          {t("permit_details_label")}
         </Text>
         <Divider mb={"4"} />
         <List spacing={2}>

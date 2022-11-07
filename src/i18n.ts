@@ -25,7 +25,7 @@ i18n
   .init({
     resources,
     lng: window.localStorage.defaultLanguage || "en",
-    ns: ["common", "signin"],
+    ns: ["common", "signin", "permit"],
     defaultNS,
     interpolation: {
       escapeValue: false // react already safes from xss
