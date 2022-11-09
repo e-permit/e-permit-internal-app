@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../components/auth/RequireAuth";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdMoreVert } from "react-icons/md";
 
 import {
   Box,
@@ -18,21 +18,24 @@ import {
   MenuList,
   MenuItem,
   FormControl,
-  InputRightElement
+  InputRightElement,
+  IconButton,
+  Avatar
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { MdSearch, MdSyncAlt } from "react-icons/md";
+import { RiAdminLine } from "react-icons/ri";
 import FlagIcon from "../components/icons/flags/FlagIcon";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { CheckIcon } from "@chakra-ui/icons";
+import { CheckIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
   const { user, setUser } = useAuth();
   const [validPermitId, setValidPermitId] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useTranslation(["dashboard", "common"]);
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const code = user?.code?.toLowerCase();
@@ -55,7 +58,7 @@ export default function Dashboard() {
                 >
                   <FlagIcon code={code} />{" "}
                   <Text as="b" display={{ base: "none", md: "flex" }}>
-                    {t(`country_title_${code}`).toUpperCase()}
+                    {t(`common:country_name_${code}`).toUpperCase()}
                   </Text>
                 </HStack>
               )}
@@ -70,7 +73,7 @@ export default function Dashboard() {
                 </InputLeftElement>
                 <Input
                   textTransform={searchValue ? "uppercase" : "initial"}
-                  placeholder={`${t("permit_number")}`}
+                  placeholder={`${t("search_permit_text")}`}
                   onChange={(e) => {
                     const permitIdReg = /^([A-Z]{2}-[A-Z]{2}-20(2[2-9]|[3-9][0-9])-[1-6]-[1-9]{1}[0-9]*)$/;
                     const r = permitIdReg.test(
@@ -95,7 +98,19 @@ export default function Dashboard() {
             </FormControl>
           </HStack>
           <Flex alignItems={"center"}>
-            <Button
+
+            <Menu placement="bottom-end">
+              <MenuButton><Avatar size='sm' /></MenuButton>
+              <MenuList>
+                <MenuItem icon={<MdLogout />} onClick={() => {
+                  setUser(null);
+                  navigate("/");
+                }}>
+                  {t("signout_title")}
+                </MenuItem>
+              </MenuList>
+            </Menu>
+            {/*<Button
               variant={"ghost"}
               colorScheme="red"
               leftIcon={<Icon as={MdLogout} />}
@@ -107,7 +122,8 @@ export default function Dashboard() {
               <Text display={{ base: "none", md: "block" }}>
                 {t("common:signout_title")}
               </Text>
-            </Button>
+              
+            </Button>*/}
           </Flex>
         </Flex>
       </Box>

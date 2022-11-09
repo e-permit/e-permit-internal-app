@@ -1,0 +1,6 @@
+{
+    "create_new_authority_header": "Create a new authority",
+    "api_uri_title": "epermit api endpoint",
+    "quota_list_label": "Quotas",
+    "api_uri_required_message": "Api uri is required"
+}

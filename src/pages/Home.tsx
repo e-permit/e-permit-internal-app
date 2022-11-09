@@ -44,7 +44,7 @@ export default function Home() {
           <ListItem
             _hover={{ cursor: "pointer" }}
             onClick={() => {
-              navigate("/authorities/UZ");
+              navigate(`/authorities/${authority}`);
             }}
           >
             <ListIcon
@@ -53,7 +53,7 @@ export default function Home() {
               code={authority.toLowerCase()}
             />
             <Text ml={"10px"} as="span">
-              {t(`country_title_${authority.toLowerCase()}`).toUpperCase()}
+              {t(`country_name_${authority.toLowerCase()}`).toUpperCase()}
             </Text>
           </ListItem>
         ))}

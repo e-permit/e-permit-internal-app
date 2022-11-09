@@ -37,7 +37,7 @@ type LoginForm = {
 };
 
 async function loadAuthorities(axiosInstance: AxiosInstance){
-
+   
 }
 
 export default function Login() {
@@ -116,7 +116,7 @@ export default function Login() {
                       onClick={() => setIsHttps(!isHttps)}
                     />
                     <Input
-                      placeholder={t("common:api_uri_title")}
+                      placeholder={t("authority:api_uri_title")}
                       {...register("apiUri", { required: true })}
                     />
                   </InputGroup>

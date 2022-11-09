@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Spinner, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -8,9 +8,10 @@ import {
     ColumnDef,
     flexRender,
 } from '@tanstack/react-table';
-import { ReactNode, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../auth/RequireAuth";
+import { PermitViewModal } from "./PermitView";
 type Permit = {
     "permit_id": string;
     "issued_at": string;
@@ -60,6 +61,17 @@ export default function PermitList({ props }: { props: PermitListProps }) {
             accessorKey: 'company_id',
             header: () => <span>{t("company_id_label")}</span>,
             footer: props => props.column.id,
+        },
+        {
+            accessorKey: 'command',
+            header: () => <IconButton
+                aria-label="add"
+                variant="ghost"
+                m={4}
+                colorScheme="teal"
+                icon={<AddIcon />}
+            />,
+            cell: props => <PermitViewModal id={props.row.getValue("permit_id")} />,
         }
         ],
         []
@@ -112,7 +124,7 @@ export default function PermitList({ props }: { props: PermitListProps }) {
     return <Box>
         <Text
             fontSize={{ base: "14px", lg: "16px" }}
-            color={"yellow.400"}
+            color={"yellow.500"}
             fontWeight={"400"}
             textTransform={"uppercase"}
             ml={5}

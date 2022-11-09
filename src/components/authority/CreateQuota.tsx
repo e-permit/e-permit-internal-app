@@ -27,24 +27,27 @@ import {
   NumberInputStepper,
   Select,
   Stack,
+  Tooltip,
   useDisclosure
 } from "@chakra-ui/react";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 type CreateForm = {
   quota: number;
   serverError: void;
 };
 
-export default function CreateQuota({
-  year,
-  typ
-}: {
-  year: number;
-  typ: string;
-}) {
+type CreateQuotaProps = {
+  permit_year: number;
+  permit_type: string;
+  authority_code: string;
+}
+
+export default function CreateQuota({ props }: { props: CreateQuotaProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { t } = useTranslation();
   const {
     register,
     reset,
@@ -61,10 +64,9 @@ export default function CreateQuota({
         aria-label=""
         variant="ghost"
         maxW={50}
-        size="sm"
         colorScheme="teal"
         onClick={onOpen}
-      ><AddIcon /></IconButton>
+      ><Tooltip label={t("authority:create_quota_button_label")} color='white'><AddIcon /></Tooltip></IconButton>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>

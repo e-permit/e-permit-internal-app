@@ -19,6 +19,7 @@ import { useAuth } from "../components/auth/RequireAuth";
 import CreateQuota from "../components/authority/CreateQuota";
 import FlagIcon from "../components/icons/flags/FlagIcon";
 import PermitList from "../components/permit/PermitList";
+import QuotaList from "../components/authority/QuotaList";
 
 export default function AuthorityDetails() {
   const navigate = useNavigate();
@@ -28,8 +29,8 @@ export default function AuthorityDetails() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [permitListProps, setPermitListProps] = useState({ issuer: user?.code, issued_for: params.code, permit_type: "BILITERAL", permit_year: year });
 
-  const authorityTitle = t(`country_title_${user?.code.toLowerCase()}`);
-  const selectedAuthorityTitle = t(`country_title_${params.code?.toLowerCase()}`);
+  const authorityTitle = t(`country_name_${user?.code.toLowerCase()}`);
+  const selectedAuthorityTitle = t(`country_name_${params.code?.toLowerCase()}`);
   const getAuthority = async (code: string | undefined) => {
     const { data } = await resolveAxios()?.get(`/authorities/${code}`);
     return data;
@@ -51,7 +52,7 @@ export default function AuthorityDetails() {
             textTransform={"uppercase"}
             mb={"4"}
           >
-            {t(`country_title_${data.code.toLowerCase()}`)}
+            {t(`country_name_${data.code.toLowerCase()}`)}
           </Text>
           <Code>{data.api_uri}</Code>
         </HStack>
@@ -72,9 +73,9 @@ export default function AuthorityDetails() {
           <HStack spacing="10px">
             <Select size="sm" maxW="130px"
               onChange={(e) => { setPermitListProps({ ...permitListProps, permit_type: e.target.value }) }}>
-              <option value="BILITERAL">{t("permit_type_biliteral_text", { ns: 'permit' })}</option>
-              <option value="TRANSIT">{t("permit_type_transit_text", { ns: 'permit' })}</option>
-              <option value="THIRDCOUNTRY">{t("permit_type_thirdcountry_text", { ns: 'permit' })}</option>
+              <option value="BILITERAL">{t("permit:permit_type_biliteral_text")}</option>
+              <option value="TRANSIT">{t("permit:permit_type_transit_text")}</option>
+              <option value="THIRDCOUNTRY">{t("permit:permit_type_thirdcountry_text")}</option>
             </Select>
           </HStack>
         </Box>
@@ -90,35 +91,7 @@ export default function AuthorityDetails() {
       </SimpleGrid>
 
       <Divider my={"20px"} />
-      <List spacing={5} ml={5}>
-        <ListItem>
-          <SimpleGrid columns={4}>
-            <Text as="span" fontWeight={"500"}>
-              {"Quota"}
-            </Text>
-            <Text as={"span"}>{"1000"}</Text>
-            <Text as={"span"}>{"1-100, 101-1000"}</Text>
-            <CreateQuota year={2022} typ="BILITERAL" />
-          </SimpleGrid>{" "}
-        </ListItem>
-        <ListItem>
-          <SimpleGrid columns={4}>
-            <Text as="span" fontWeight={"500"}>
-              {"Permits"}
-            </Text>
-            <Text as={"span"}>{"200"}</Text>
-          </SimpleGrid>{" "}
-        </ListItem>
-        <ListItem>
-          <SimpleGrid columns={4}>
-            <Text as="span" fontWeight={"500"}>
-              {"Usage"}
-            </Text>
-            <Text as={"span"}>{"1000"}</Text>
-          </SimpleGrid>{" "}
-        </ListItem>
-      </List>
-
+      <QuotaList quotas={[]} />
       <PermitList props={permitListProps} />
     </Box>
   );

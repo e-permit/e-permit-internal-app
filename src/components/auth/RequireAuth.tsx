@@ -62,3 +62,4 @@ export default RequireAuth;
 export const useAuth = () => {
   return useContext(AuthContext);
 };
+

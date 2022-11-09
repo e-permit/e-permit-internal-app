@@ -6,9 +6,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 export default function PermitDetails() {
-  const { resolveAxios } = useAuth();
+  //const { resolveAxios } = useAuth();
   const params = useParams();
-  const getPermit = async (id: string | undefined) => {
+ /* const getPermit = async (id: string | undefined) => {
     const { data } = await resolveAxios()?.get(`/permits/find/${id}`);
     return data;
   };
@@ -16,10 +16,10 @@ export default function PermitDetails() {
     getPermit(params.id)
   );
   if (error || !data) return <div>Request Failed</div>;
-  if (isFetching) return <Spinner />;
+  if (isFetching) return <Spinner />;*/
   return (
     <Box mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
-      <PermitView permit={data} />
+      <PermitView id={params.id}  inModal={false}  />
       <ActivityList />
     </Box>
   );
