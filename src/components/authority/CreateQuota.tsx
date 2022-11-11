@@ -40,9 +40,9 @@ type CreateForm = {
 };
 
 type CreateQuotaProps = {
-  permit_year: number;
-  permit_type: string;
-  authority_code: string;
+  permitYear: number;
+  permitType: string;
+  authorityCode: string;
 }
 
 export default function CreateQuota({ props }: { props: CreateQuotaProps }) {

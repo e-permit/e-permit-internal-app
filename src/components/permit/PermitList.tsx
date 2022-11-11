@@ -8,8 +8,9 @@ import {
     ColumnDef,
     flexRender,
 } from '@tanstack/react-table';
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { PermitFilterProps } from "../../lib/PermitFilterProps";
 import { useAuth } from "../auth/RequireAuth";
 import { PermitViewModal } from "./PermitView";
 type Permit = {
@@ -21,15 +22,9 @@ type Permit = {
     "company_name": string;
 }
 
-export interface PermitListProps {
-    "issuer": string | undefined;
-    "issued_for": string | undefined;
-    "permit_type": string;
-    "permit_year": number;
-}
-
-export default function PermitList({ props }: { props: PermitListProps }) {
+export default ({ props }: { props: PermitFilterProps }) => {
     const { t } = useTranslation(["permit"]);
+    const { resolveAxios } = useAuth();
     const columns = useMemo<ColumnDef<Permit>[]>(
         () => [{
             accessorKey: 'permit_id',
@@ -64,7 +59,7 @@ export default function PermitList({ props }: { props: PermitListProps }) {
         },
         {
             accessorKey: 'command',
-            header: () => <IconButton
+            header: () => props.isOwner && <IconButton
                 aria-label="add"
                 variant="ghost"
                 m={4}
@@ -74,7 +69,7 @@ export default function PermitList({ props }: { props: PermitListProps }) {
             cell: props => <PermitViewModal id={props.row.getValue("permit_id")} />,
         }
         ],
-        []
+        [props]
     );
     const [{ pageIndex, pageSize }, setPagination] =
         useState<PaginationState>({
@@ -90,14 +85,13 @@ export default function PermitList({ props }: { props: PermitListProps }) {
     )
     const fetchPermitsOptions = {
         page: pageIndex,
-        issuer: props.issuer,
-        issued_for: props.issued_for,
-        permit_year: props.permit_year,
-        permit_type: props.permit_type
+        issuer: props.isOwner ? props.authorityCode : props.selectedAuthorityCode,
+        issued_for: props.isOwner ? props.selectedAuthorityCode : props.authorityCode,
+        permit_year: props.permitYear,
+        permit_type: props.permitType
     }
-    const { resolveAxios } = useAuth();
+
     const getPermits = async (options: any) => {
-        console.log(options);
         const { data } = await resolveAxios()?.get(
             `/permits?page=${options.page}&&issuer=${options.issuer}` +
             `&&issued_for=${options.issued_for}&&permit_year=${options.permit_year}&&permit_type=${options.permit_type}`);

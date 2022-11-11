@@ -12,16 +12,12 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  HStack,
   ListItem,
   useColorModeValue,
   useDisclosure
 } from "@chakra-ui/react";
 import { MdLogin, MdLogout } from "react-icons/md";
-import { useTranslation } from "react-i18next";
 
-
-import FlagIcon from "../icons/flags/FlagIcon";
 import React from "react";
 
 

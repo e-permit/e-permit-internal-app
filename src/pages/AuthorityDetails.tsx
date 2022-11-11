@@ -20,14 +20,24 @@ import CreateQuota from "../components/authority/CreateQuota";
 import FlagIcon from "../components/icons/flags/FlagIcon";
 import PermitList from "../components/permit/PermitList";
 import QuotaList from "../components/authority/QuotaList";
+import { PermitFilterProps } from "../lib/PermitFilterProps";
+
 
 export default function AuthorityDetails() {
-  const navigate = useNavigate();
+  const params = useParams();
   const { resolveAxios, user } = useAuth();
   const { t } = useTranslation(["common", "permit"]);
-  const params = useParams();
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [permitListProps, setPermitListProps] = useState({ issuer: user?.code, issued_for: params.code, permit_type: "BILITERAL", permit_year: year });
+
+  //const [year, setYear] = useState(new Date().getFullYear());
+
+  const initialFilter: PermitFilterProps = {
+    isOwner: true,
+    authorityCode: user?.code!,
+    selectedAuthorityCode: params.code!,
+    permitYear: new Date().getFullYear(),
+    permitType: "BILITERAL"
+  };
+  const [permitFilterProps, setPermitFilterProps] = useState(initialFilter);
 
   const authorityTitle = t(`country_name_${user?.code.toLowerCase()}`);
   const selectedAuthorityTitle = t(`country_name_${params.code?.toLowerCase()}`);
@@ -39,7 +49,20 @@ export default function AuthorityDetails() {
   const { data, error, isFetching } = useQuery(["authority", params.code], () =>
     getAuthority(params.code)
   );
+
+  const changeOwner = () => {
+    setPermitFilterProps({ ...permitFilterProps, isOwner: !permitFilterProps.isOwner });
+  }
   if (isFetching) return <Spinner />;
+  const filterQuotas = (quotas: []) => {
+    const issuer = permitFilterProps.isOwner ? permitFilterProps.authorityCode : permitFilterProps.selectedAuthorityCode;
+    const issuedFor = permitFilterProps.isOwner ? permitFilterProps.selectedAuthorityCode : permitFilterProps.authorityCode;
+    return quotas.filter((x: any) =>
+      x.permit_issuer === issuer &&
+      x.permit_issued_for === issuedFor &&
+      x.permit_type === permitFilterProps.permitType &&
+      x.permit_year === permitFilterProps.permitYear);
+  }
   return (
     <Box mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       <Box>
@@ -62,7 +85,7 @@ export default function AuthorityDetails() {
         <Box>
           <HStack spacing="10px">
             <Select size="sm" maxW="200px"
-              onChange={(e) => { setPermitListProps({ ...permitListProps, issuer: permitListProps.issued_for, issued_for: permitListProps.issuer }) }}>
+              onChange={changeOwner}>
               <option value={user?.code}>{`${authorityTitle} -> ${selectedAuthorityTitle}`}</option>
               <option value={params.code}>{`${selectedAuthorityTitle} -> ${authorityTitle}`} </option>
             </Select>
@@ -72,7 +95,7 @@ export default function AuthorityDetails() {
         <Box>
           <HStack spacing="10px">
             <Select size="sm" maxW="130px"
-              onChange={(e) => { setPermitListProps({ ...permitListProps, permit_type: e.target.value }) }}>
+              onChange={(e) => { setPermitFilterProps({ ...permitFilterProps, permitType: e.target.value }) }}>
               <option value="BILITERAL">{t("permit:permit_type_biliteral_text")}</option>
               <option value="TRANSIT">{t("permit:permit_type_transit_text")}</option>
               <option value="THIRDCOUNTRY">{t("permit:permit_type_thirdcountry_text")}</option>
@@ -82,17 +105,17 @@ export default function AuthorityDetails() {
         <Box>
           <HStack spacing="10px">
             <Select size="sm" maxW="80px"
-              onChange={(e) => { setPermitListProps({ ...permitListProps, permit_year: Number.parseInt(e.target.value) }) }}>
-              <option value={year}>{year}</option>
-              <option value={year + 1}>{year + 1}</option>
+              onChange={(e) => { setPermitFilterProps({ ...permitFilterProps, permitYear: Number.parseInt(e.target.value) }) }}>
+              <option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
+              <option value={new Date().getFullYear() + 1}>{new Date().getFullYear() + 1}</option>
             </Select>
           </HStack>
         </Box>
       </SimpleGrid>
 
       <Divider my={"20px"} />
-      <QuotaList quotas={[]} />
-      <PermitList props={permitListProps} />
+      <QuotaList quotas={filterQuotas(data.quotas)} filter={permitFilterProps} />
+      <PermitList props={permitFilterProps} />
     </Box>
   );
 }
