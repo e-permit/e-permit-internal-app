@@ -28,8 +28,6 @@ export default function AuthorityDetails() {
   const { resolveAxios, user } = useAuth();
   const { t } = useTranslation(["common", "permit"]);
 
-  //const [year, setYear] = useState(new Date().getFullYear());
-
   const initialFilter: PermitFilterProps = {
     isOwner: true,
     authorityCode: user?.code!,
@@ -84,17 +82,17 @@ export default function AuthorityDetails() {
       <SimpleGrid columns={4}>
         <Box>
           <HStack spacing="10px">
-            <Select size="sm" maxW="200px"
+            <Select size="sm" maxW="200px" 
               onChange={changeOwner}>
-              <option value={user?.code}>{`${authorityTitle} -> ${selectedAuthorityTitle}`}</option>
-              <option value={params.code}>{`${selectedAuthorityTitle} -> ${authorityTitle}`} </option>
+              <option value="0" selected={permitFilterProps.isOwner}>{`${authorityTitle} -> ${selectedAuthorityTitle}`}</option>
+              <option value="1" selected={!permitFilterProps.isOwner}>{`${selectedAuthorityTitle} -> ${authorityTitle}`} </option>
             </Select>
           </HStack>
         </Box>
 
         <Box>
           <HStack spacing="10px">
-            <Select size="sm" maxW="130px"
+            <Select size="sm" maxW="130px" value={permitFilterProps.permitType}
               onChange={(e) => { setPermitFilterProps({ ...permitFilterProps, permitType: e.target.value }) }}>
               <option value="BILITERAL">{t("permit:permit_type_biliteral_text")}</option>
               <option value="TRANSIT">{t("permit:permit_type_transit_text")}</option>
@@ -104,7 +102,7 @@ export default function AuthorityDetails() {
         </Box>
         <Box>
           <HStack spacing="10px">
-            <Select size="sm" maxW="80px"
+            <Select size="sm" maxW="80px" value={permitFilterProps.permitYear}
               onChange={(e) => { setPermitFilterProps({ ...permitFilterProps, permitYear: Number.parseInt(e.target.value) }) }}>
               <option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
               <option value={new Date().getFullYear() + 1}>{new Date().getFullYear() + 1}</option>
