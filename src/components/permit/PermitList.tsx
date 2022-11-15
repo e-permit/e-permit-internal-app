@@ -12,6 +12,7 @@ import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PermitFilterProps } from "../../lib/PermitFilterProps";
 import { useAuth } from "../auth/RequireAuth";
+import Create from "./Create";
 import { PermitViewModal } from "./PermitView";
 type Permit = {
     "permit_id": string;
@@ -59,13 +60,7 @@ export default ({ props }: { props: PermitFilterProps }) => {
         },
         {
             accessorKey: 'command',
-            header: () => props.isOwner && <IconButton
-                aria-label="add"
-                variant="ghost"
-                m={4}
-                colorScheme="teal"
-                icon={<AddIcon />}
-            />,
+            header: () => props.isOwner && <Create props={props} />,
             cell: props => <PermitViewModal id={props.row.getValue("permit_id")} />,
         }
         ],

@@ -4,6 +4,7 @@ import {
   Code,
   Divider,
   HStack,
+  IconButton,
   List,
   ListItem,
   Select,
@@ -21,6 +22,7 @@ import FlagIcon from "../components/icons/flags/FlagIcon";
 import PermitList from "../components/permit/PermitList";
 import QuotaList from "../components/authority/QuotaList";
 import { PermitFilterProps } from "../lib/PermitFilterProps";
+import Truck from "../components/icons/Truck";
 
 
 export default function AuthorityDetails() {
@@ -37,8 +39,6 @@ export default function AuthorityDetails() {
   };
   const [permitFilterProps, setPermitFilterProps] = useState(initialFilter);
 
-  const authorityTitle = t(`country_name_${user?.code.toLowerCase()}`);
-  const selectedAuthorityTitle = t(`country_name_${params.code?.toLowerCase()}`);
   const getAuthority = async (code: string | undefined) => {
     const { data } = await resolveAxios()?.get(`/authorities/${code}`);
     return data;
@@ -79,14 +79,12 @@ export default function AuthorityDetails() {
         </HStack>
       </Box>
       <Divider my={"20px"} />
-      <SimpleGrid columns={4}>
+      <SimpleGrid columns={5}>
         <Box>
           <HStack spacing="10px">
-            <Select size="sm" maxW="200px" 
-              onChange={changeOwner}>
-              <option value="0" selected={permitFilterProps.isOwner}>{`${authorityTitle} -> ${selectedAuthorityTitle}`}</option>
-              <option value="1" selected={!permitFilterProps.isOwner}>{`${selectedAuthorityTitle} -> ${authorityTitle}`} </option>
-            </Select>
+            <FlagIcon code={(user?.code!).toLowerCase()} />
+            <IconButton aria-label="" onClick={changeOwner} variant={"link"}><Truck  isOwner={permitFilterProps.isOwner}/></IconButton>
+            <FlagIcon code={data.code.toLowerCase()} />
           </HStack>
         </Box>
 

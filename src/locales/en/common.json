@@ -8,5 +8,7 @@
   "create_new_submit": "Create",
   "create_new_cancel": "Cancel",
   "next_page_text": "Next Page",
-  "previous_page_text": "Previous Page"
+  "previous_page_text": "Previous Page",
+  "success_title":"Success",
+  "server_error_message": "There is a server error"
 }

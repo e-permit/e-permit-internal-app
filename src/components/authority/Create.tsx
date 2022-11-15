@@ -39,7 +39,7 @@ export default function CreateAuthority() {
   const { resolveAxios } = useAuth();
   const axios = resolveAxios();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { t } = useTranslation(["common", "signin"]);
+  const { t } = useTranslation(["authority"]);
   const queryClient = useQueryClient();
   const {
     register,
@@ -56,8 +56,8 @@ export default function CreateAuthority() {
     onSuccess: (data) => {
       queryClient.refetchQueries(["profile"]);
       toast({
-        title: "Success",
-        description: "Authority is created successfully",
+        title: t("common:success_title"),
+        description: t("create_new_authority_success_description"),
         status: "success",
         duration: 9000,
         isClosable: true
@@ -68,7 +68,7 @@ export default function CreateAuthority() {
     onError: (error) => {
       // 400 422 500
       console.log("400 Error: ", JSON.stringify(error), error.response?.data);
-      setError("serverError", { message: "There is a server error" });
+      setError("serverError", { message:  t("common:server_error_message")});
     }
   });
 
@@ -142,7 +142,7 @@ export default function CreateAuthority() {
                 onClose();
               }}
             >
-              {t("create_new_cancel")}
+              {t("common:create_new_cancel")}
             </Button>
             <Button
               type="submit"
@@ -150,7 +150,7 @@ export default function CreateAuthority() {
               isLoading={newAuthority.isLoading}
               form="create-authority"
             >
-              {t("create_new_submit")}
+              {t("common:create_new_submit")}
             </Button>
           </DrawerFooter>
         </DrawerContent>

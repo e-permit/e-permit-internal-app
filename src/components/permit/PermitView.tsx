@@ -25,6 +25,13 @@ import { ReactNode } from "react";
 import { useAuth } from "../auth/RequireAuth";
 import { useQuery } from "@tanstack/react-query";
 import { ViewIcon } from "@chakra-ui/icons";
+import ActivityList from "./ActivityList";
+
+export interface PermitActivity {
+  activity_type: string;
+  activity_timestamp: string;
+  activity_details: string;
+}
 
 export interface PermitViewProps {
   inModal: boolean;
@@ -38,6 +45,8 @@ export interface PermitViewProps {
   plate_number: string;
   company_id: string;
   company_name: string;
+  used: boolean;
+  activities: PermitActivity[]
 }
 
 function PermitLabel({ children }: { children: ReactNode }) {
@@ -86,9 +95,9 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
   const { data, error, isFetching } = useQuery(["permit", id], () =>
     getPermit(id)
   );
-  if (error || !data) return <div>Request Failed</div>;
+  if (error) return <div>Request Failed</div>;
   if (isFetching) return <Spinner />;
-  return <PermitInfo permit={{ ...data, inModal }} />;
+  return <><PermitInfo permit={{ ...data, inModal }} /><ActivityList activities={data.activities} /></> ;
 }
 
 export function PermitInfo({ permit }: { permit: PermitViewProps }) {

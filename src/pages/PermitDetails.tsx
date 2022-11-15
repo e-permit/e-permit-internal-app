@@ -20,7 +20,6 @@ export default function PermitDetails() {
   return (
     <Box mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       <PermitView id={params.id}  inModal={false}  />
-      <ActivityList />
     </Box>
   );
 }

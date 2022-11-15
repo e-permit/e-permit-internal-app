@@ -1,6 +1,7 @@
 {
   "permit_details_label": "Permit Details",
   "permit_list_label": "Permits",
+  "create_permit_button_label": "Create permit",
   "issuer_label": "This permit issued by",
   "issued_for_label": "This permit issued for",
   "plate_number_label": "Plate number(s)",
