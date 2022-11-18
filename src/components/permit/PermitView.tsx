@@ -122,6 +122,7 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
     {pdf.data && <Link color='teal.500' href={pdf.data} download={`${id}.pdf`}>
       <HStack spacing='4px' my={5}><AiOutlineFilePdf /><Text>Download Pdf</Text></HStack>
     </Link>}
+    {pdf.error && <div>{JSON.stringify(pdf.error)}</div>}
     <ActivityList activities={data.activities} /></>;
 }
 
