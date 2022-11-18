@@ -105,7 +105,7 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
     return data;
   };
   const getPdf = async (id: string | undefined) => {
-    const { data } = await resolveAxios()?.get(`/permits/${id}/pdf`);
+    const { data } = await resolveAxios()?.get(`/permits/${id}/pdf`, { responseType: "text" });
     return `data:application/pdf;base64,${data}`;
   };
   const { data, error, isFetching } = useQuery(["permit", id], () =>
