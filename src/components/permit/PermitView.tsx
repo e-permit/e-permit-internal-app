@@ -51,6 +51,16 @@ export interface PermitViewProps {
   activities: PermitActivity[]
 }
 
+const fileToBase64 = (file: File | Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+
+    reader.readAsDataURL(file);
+    reader.onerror = reject;
+  });
 function PermitLabel({ children }: { children: ReactNode }) {
   return (
     <Text fontSize={{ base: "16px", md: "17px" }} fontWeight={"600"}>
@@ -96,7 +106,7 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
   };
   const getPdf = async (id: string | undefined) => {
     const { data } = await resolveAxios()?.get(`/permits/${id}/pdf`, { responseType: "blob" });
-    return data;
+    return await fileToBase64(data);
   };
   const { data, error, isFetching } = useQuery(["permit", id], () =>
     getPermit(id)
@@ -109,7 +119,7 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
   if (isFetching || pdf.isFetching) return <Spinner />;
   return <>
     <PermitInfo permit={{ ...data, inModal }} />
-    <Link color='teal.500' href={URL.createObjectURL(pdf.data)} download={`${id}.pdf`}>
+    <Link color='teal.500' href={pdf.data} download={`${id}.pdf`}>
       <HStack spacing='4px' my={5}><AiOutlineFilePdf /><Text>Download Pdf</Text></HStack>
     </Link>
     <ActivityList activities={data.activities} /></>;
