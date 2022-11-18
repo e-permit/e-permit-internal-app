@@ -6,6 +6,7 @@ import {
   Divider,
   HStack,
   IconButton,
+  Link,
   List,
   ListItem,
   Modal,
@@ -21,11 +22,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import FlagIcon from "../icons/flags/FlagIcon";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { useAuth } from "../auth/RequireAuth";
 import { useQuery } from "@tanstack/react-query";
 import { ViewIcon } from "@chakra-ui/icons";
 import ActivityList from "./ActivityList";
+import { AiOutlineFilePdf } from "react-icons/ai";
 
 export interface PermitActivity {
   activity_type: string;
@@ -92,12 +94,25 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
     const { data } = await resolveAxios()?.get(`/permits/find/${id}`);
     return data;
   };
+  const getPdf = async (id: string | undefined) => {
+    const { data } = await resolveAxios()?.get(`/permits/${id}/pdf`, { responseType: "blob" });
+    return data;
+  };
   const { data, error, isFetching } = useQuery(["permit", id], () =>
     getPermit(id)
   );
-  if (error) return <div>Request Failed</div>;
-  if (isFetching) return <Spinner />;
-  return <><PermitInfo permit={{ ...data, inModal }} /><ActivityList activities={data.activities} /></> ;
+  const pdf = useQuery(["pdf", id], () =>
+    getPdf(id)
+  );
+
+  if (error || pdf.error) return <div>Request Failed</div>;
+  if (isFetching || pdf.isFetching) return <Spinner />;
+  return <>
+    <PermitInfo permit={{ ...data, inModal }} />
+    <Link color='teal.500' href={URL.createObjectURL(pdf.data)} download={`${id}.pdf`}>
+      <HStack spacing='4px' my={5}><AiOutlineFilePdf /><Text>Download Pdf</Text></HStack>
+    </Link>
+    <ActivityList activities={data.activities} /></>;
 }
 
 export function PermitInfo({ permit }: { permit: PermitViewProps }) {
