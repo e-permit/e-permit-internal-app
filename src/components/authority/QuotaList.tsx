@@ -11,6 +11,7 @@ export type AuthorityQuota = {
 
 export default ({ quotas, filter }: { quotas: AuthorityQuota[], filter: PermitFilterProps }) => {
     const { t } = useTranslation(["authority"]);
+    quotas = quotas.sort((a, b) => a.end_number - b.end_number);
     return (
         <Box>
             <Text
