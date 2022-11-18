@@ -106,7 +106,7 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
   };
   const getPdf = async (id: string | undefined) => {
     const { data } = await resolveAxios()?.get(`/permits/${id}/pdf`, { responseType: "blob" });
-    return await fileToBase64(data);
+    return `data:application/pdf;base64,${data}`;
   };
   const { data, error, isFetching } = useQuery(["permit", id], () =>
     getPermit(id)
@@ -115,13 +115,13 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
     getPdf(id)
   );
 
-  if (error || pdf.error) return <div>Request Failed</div>;
+  if (error) return <div>Request Failed</div>;
   if (isFetching || pdf.isFetching) return <Spinner />;
   return <>
     <PermitInfo permit={{ ...data, inModal }} />
-    <Link color='teal.500' href={pdf.data} download={`${id}.pdf`}>
+    {pdf.data && <Link color='teal.500' href={pdf.data} download={`${id}.pdf`}>
       <HStack spacing='4px' my={5}><AiOutlineFilePdf /><Text>Download Pdf</Text></HStack>
-    </Link>
+    </Link>}
     <ActivityList activities={data.activities} /></>;
 }
 
