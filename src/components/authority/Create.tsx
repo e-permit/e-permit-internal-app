@@ -68,12 +68,12 @@ export default function CreateAuthority() {
     onError: (error) => {
       // 400 422 500
       console.log("400 Error: ", JSON.stringify(error), error.response?.data);
-      setError("serverError", { message:  t("common:server_error_message")});
+      setError("serverError", { message: t("common:server_error_message") });
     }
   });
 
   const onSubmit: SubmitHandler<CreateForm> = (data) => {
-    newAuthority.mutate(data.apiUri);
+    newAuthority.mutate(`${isHttps ? "https://" : "http://"}${data.apiUri}`);
   };
 
   return (

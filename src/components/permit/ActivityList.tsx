@@ -92,7 +92,6 @@ export default function ActivityList({ activities }: { activities: PermitActivit
 
 
       </List>
-      <AddActivity />
     </Box>
   );
 }

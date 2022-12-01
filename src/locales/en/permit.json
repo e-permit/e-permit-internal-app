@@ -21,7 +21,7 @@
   "jwk_notfound_message": "Issuer key not found",
   "revoked_cred_message": "Revoked credential",
   "valid_signature_message": "Signature is valid",
-  "permit_type_biliteral_text": "Biliteral",
+  "permit_type_biliteral_text": "Bilateral",
   "permit_type_transit_text": "Transit",
   "permit_type_thirdcountry_text": "Third Country",
   "authority_name_tr": "Türkiye",
