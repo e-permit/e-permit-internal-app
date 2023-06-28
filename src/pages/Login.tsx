@@ -4,7 +4,6 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  FormErrorMessage,
   Icon,
   InputGroup,
   InputLeftAddon
@@ -27,19 +26,18 @@ import { useTranslation } from "react-i18next";
 import SelectLang from "../components/SelectLang";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 import axiosTauriAdapter from 'axios-tauri-api-adapter';
 import { Navigate } from "react-router-dom";
 type LoginForm = {
   username: string;
   password: string;
   apiUri: string;
-  serverError: void;
 };
 
 
 export default function Login() {
-  const { t } = useTranslation(["signin", "common"]);
+  const { t } = useTranslation();
   const [isHttps, setIsHttps] = useState(true);
   const { user, setUser } = useAuth();
   const {
@@ -50,7 +48,7 @@ export default function Login() {
   } = useForm<LoginForm>();
   async function signIn(form: LoginForm) {
     const accessToken =
-      window.btoa(form.username + ":" + form.password);
+      btoa(form.username + ":" + form.password);
     const httpPrefix = isHttps ? "https://" : "http://";
     const apiUri = httpPrefix + form.apiUri;
     const axiosInstance = axios.create({
@@ -64,20 +62,20 @@ export default function Login() {
     }
     try {
       const res = await axiosInstance.get("/");
-      if (res.status == 200) {
-        let user = {
+      if (res.status === 200) {
+        const user = {
           accessToken,
           apiUri: apiUri,
           code: res.data.authority,
           roles: res.data.roles,
         };
         setUser(user);
-      } else {
-        alert(JSON.stringify(res));
-        setError("serverError", { message: "Login attempt failed!" + JSON.stringify(res) });
+      } else if (res.status === 401) {
+        setError("root", { message: t("errors.login.unathorized") });
       }
     } catch (e) {
-      alert("Error occured!" + JSON.stringify(e));
+      console.error("Error occured!" + JSON.stringify(e));
+      setError("root", { message: t("errors.login.unexpected") });
     }
 
   }
@@ -95,9 +93,9 @@ export default function Login() {
       >
         <Stack spacing={8} mx={"auto"} maxW={"lg"} minW={"md"} py={12} px={6}>
           <Stack align={"center"}>
-            <Heading fontSize={"4xl"}>{t("page_title")}</Heading>
+            <Heading fontSize={"4xl"}>{t("Sign in to e-permit")}</Heading>
             <Text fontSize={"lg"} color={"gray.600"} as="span">
-              {t("page_description")} <SelectLang />
+              {t("to manage and verify")} <SelectLang />
             </Text>
           </Stack>
           <Box
@@ -116,28 +114,28 @@ export default function Login() {
                       onClick={() => setIsHttps(!isHttps)}
                     />
                     <Input
-                      placeholder={t("authority:api_uri_title")}
+                      placeholder={t("e-permit api endpoint")}
                       {...register("apiUri", { required: true })}
                     />
                   </InputGroup>
                 </FormControl>
                 <FormControl id="username">
-                  <FormLabel> {t("username_title")}</FormLabel>
+                  <FormLabel> {t("Username")}</FormLabel>
                   <Input {...(register("username", { required: true }))} />
                 </FormControl>
                 <FormControl id="password">
-                  <FormLabel> {t("password_title")}</FormLabel>
+                  <FormLabel> {t("Password")}</FormLabel>
                   <Input
                     type="password"
                     {...(register("password", { required: true }))}
                   />
                 </FormControl>
-                {errors.serverError && (
+                {errors.root && (
                   <Alert status="error" mt={"20px"}>
                     <AlertIcon />
-                    <AlertTitle>Server Error</AlertTitle>
+                    <AlertTitle>{t("Server error")}</AlertTitle>
                     <AlertDescription>
-                      {errors.serverError.message}
+                      {errors.root.message}
                     </AlertDescription>
                   </Alert>
                 )}
@@ -152,7 +150,7 @@ export default function Login() {
                       bg: "blue.500"
                     }}
                   >
-                    {t("signin_title")}
+                    {t("Sign in")}
                   </Button>
                 </Stack>
               </Stack>

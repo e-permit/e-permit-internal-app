@@ -1,0 +1,33 @@
+{
+    "actions": {
+        "create": {
+            "authority_header_title": "New authority",
+            "authority_success_title": "Authority is created successfully",
+            "quota_header_title": "Create quota",
+            "quota_success_title": "Quota is created successfully",
+            "quota_button": "Create quota"
+        }
+    },
+    "country": {
+        "names": {
+            "tr": "Türkiye",
+            "uz": "Uzbekistan",
+            "ua": "Ukraine",
+            "ru": "Russia",
+            "az": "Azerbaijan",
+            "md": "Moldova"
+        }
+    },
+    "permit": {
+        "labels": {
+            "id": "Permit identifier",
+            "type": "Type of the permit",
+            "year": "Year of the permit",
+            "issuer": "This permit issued by",
+            "issued_for": "This permit issued for",
+            "plate_number": "Plate number(s)",
+            "issued_at": "This permit prepared on",
+            "expire_at": "This permit valid until"
+        }
+    }
+}

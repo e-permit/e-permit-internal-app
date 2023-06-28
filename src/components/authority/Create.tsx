@@ -31,7 +31,6 @@ import { useAuth } from "../../lib/useAuth";
 
 type CreateForm = {
   apiUri: string;
-  serverError: void;
 };
 
 export default function CreateAuthority() {
@@ -68,7 +67,7 @@ export default function CreateAuthority() {
     onError: (error) => {
       // 400 422 500
       console.log("400 Error: ", JSON.stringify(error), error.response?.data);
-      setError("serverError", { message: t("common:server_error_message") });
+      setError("root", { message: t("common:server_error_message") });
     }
   });
 
@@ -119,12 +118,12 @@ export default function CreateAuthority() {
                       {errors.apiUri && errors.apiUri?.message}
                     </FormErrorMessage>
                   </FormControl>
-                  {errors.serverError && (
+                  {errors.root && (
                     <Alert status="error" mt={"20px"}>
                       <AlertIcon />
                       <AlertTitle>Server Error</AlertTitle>
                       <AlertDescription>
-                        {errors.serverError.message}
+                        {errors.root.message}
                       </AlertDescription>
                     </Alert>
                   )}

@@ -1,7 +1,6 @@
 import {
   Box,
   Divider,
-  Heading,
   List,
   ListIcon,
   ListItem,
@@ -58,9 +57,6 @@ export default function Home() {
           </ListItem>
         ))}
       </List>
-
-      {/*<CreateQuota year={2022} typ="BILITERAL" />
-      {t("title")}*/}
     </Box>
   );
 }

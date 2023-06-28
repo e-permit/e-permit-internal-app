@@ -5,8 +5,8 @@ import { RouterProvider } from "react-router-dom";
 import AuthProvider from "./lib/useAuth";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./lib/i18n";
-import "./lib/i18n";
+import "./i18n";
+import "./i18n";
 import { worker } from "./mocks/browser";
 
 if (process.env.NODE_ENV === "development") {

@@ -4,9 +4,8 @@ import {
   Code,
   Divider,
   HStack,
+  Hide,
   IconButton,
-  List,
-  ListItem,
   Select,
   SimpleGrid,
   Spinner,
@@ -28,14 +27,14 @@ import { useAuth } from "../lib/useAuth";
 export default function AuthorityDetails() {
   const params = useParams();
   const { resolveAxios, user } = useAuth();
-  const { t } = useTranslation(["common", "permit"]);
+  const { t } = useTranslation();
 
   const initialFilter: PermitFilterProps = {
     isOwner: true,
     authorityCode: user?.code!,
     selectedAuthorityCode: params.code!,
     permitYear: new Date().getFullYear(),
-    permitType: "BILITERAL"
+    permitType: "BILATERAL"
   };
   const [permitFilterProps, setPermitFilterProps] = useState(initialFilter);
 
@@ -71,37 +70,38 @@ export default function AuthorityDetails() {
             color={useColorModeValue("gray.500", "gray.300")}
             fontWeight={"500"}
             textTransform={"uppercase"}
-            mb={"4"}
+            mb={"1"}
           >
-            {t(`country_name_${data.code.toLowerCase()}`)}
+            {t(`country.names.${data.code.toLowerCase()}`)}
           </Text>
-          <Code>{data.api_uri}</Code>
+          <Hide below='sm'><Code>{data.api_uri}</Code></Hide>
         </HStack>
       </Box>
       <Divider my={"20px"} />
-      <SimpleGrid columns={5}>
+      <SimpleGrid columns={{ base: 3, md: 5 }}>
         <Box>
           <HStack spacing="10px">
             <FlagIcon code={(user?.code!).toLowerCase()} />
-            <IconButton aria-label="" onClick={changeOwner} variant={"link"}><Truck  isOwner={permitFilterProps.isOwner}/></IconButton>
+            <IconButton aria-label="" onClick={changeOwner} variant={"link"}><Truck isOwner={permitFilterProps.isOwner} /></IconButton>
             <FlagIcon code={data.code.toLowerCase()} />
           </HStack>
         </Box>
 
-        <Box>
+        <Box ml="2">
           <HStack spacing="10px">
             <Select size="sm" maxW="130px" value={permitFilterProps.permitType}
               onChange={(e) => { setPermitFilterProps({ ...permitFilterProps, permitType: e.target.value }) }}>
-              <option value="BILITERAL">{t("permit:permit_type_biliteral_text")}</option>
-              <option value="TRANSIT">{t("permit:permit_type_transit_text")}</option>
-              <option value="THIRDCOUNTRY">{t("permit:permit_type_thirdcountry_text")}</option>
+              <option value="BILATERAL">{t("Bilateral")}</option>
+              <option value="TRANSIT">{t("Transit")}</option>
+              <option value="THIRDCOUNTRY">{t("3rd Country")}</option>
             </Select>
           </HStack>
         </Box>
-        <Box>
+        <Box ml="1">
           <HStack spacing="10px">
             <Select size="sm" maxW="80px" value={permitFilterProps.permitYear}
               onChange={(e) => { setPermitFilterProps({ ...permitFilterProps, permitYear: Number.parseInt(e.target.value) }) }}>
+              <option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}</option>
               <option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
               <option value={new Date().getFullYear() + 1}>{new Date().getFullYear() + 1}</option>
             </Select>

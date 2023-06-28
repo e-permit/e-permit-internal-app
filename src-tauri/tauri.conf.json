@@ -1,9 +1,10 @@
 {
   "build": {
-    "devPath": "http://localhost:3000",
-    "beforeDevCommand": "npm run start",
+    "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
-    "distDir": "../build"
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": false
   },
   "package": {
     "productName": "e-permit-internal-app",
