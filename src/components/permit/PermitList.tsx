@@ -11,9 +11,9 @@ import {
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PermitFilterProps } from "../../lib/PermitFilterProps";
-import { useAuth } from "../auth/RequireAuth";
 import Create from "./Create";
 import { PermitViewModal } from "./PermitView";
+import { useAuth } from "../../lib/useAuth";
 type Permit = {
     "permit_id": string;
     "issued_at": string;

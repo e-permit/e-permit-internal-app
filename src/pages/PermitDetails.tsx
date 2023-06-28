@@ -1,7 +1,6 @@
 import { Box, Spinner } from "@chakra-ui/react";
 import PermitView from "../components/permit/PermitView";
 import ActivityList from "../components/permit/ActivityList";
-import { useAuth } from "../components/auth/RequireAuth";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 

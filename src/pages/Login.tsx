@@ -1,4 +1,4 @@
-import { useAuth } from "./RequireAuth";
+import { useAuth } from "../lib/useAuth";
 import {
   Alert,
   AlertDescription,
@@ -24,11 +24,12 @@ import {
   useColorModeValue
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import SelectLang from "./SelectLang";
+import SelectLang from "../components/SelectLang";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import axios, { AxiosInstance } from "axios";
 import axiosTauriAdapter from 'axios-tauri-api-adapter';
+import { Navigate } from "react-router-dom";
 type LoginForm = {
   username: string;
   password: string;
@@ -36,14 +37,11 @@ type LoginForm = {
   serverError: void;
 };
 
-async function loadAuthorities(axiosInstance: AxiosInstance){
-   
-}
 
 export default function Login() {
   const { t } = useTranslation(["signin", "common"]);
   const [isHttps, setIsHttps] = useState(true);
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const {
     register,
     setError,
@@ -55,14 +53,14 @@ export default function Login() {
       window.btoa(form.username + ":" + form.password);
     const httpPrefix = isHttps ? "https://" : "http://";
     const apiUri = httpPrefix + form.apiUri;
-    const axiosInstance =  axios.create({
+    const axiosInstance = axios.create({
       baseURL: apiUri,
       headers: {
         Authorization: "Basic " + accessToken
       }
     });
     if ((window as any).__TAURI_IPC__) {
-       axiosInstance.defaults.adapter = axiosTauriAdapter;
+      axiosInstance.defaults.adapter = axiosTauriAdapter;
     }
     try {
       const res = await axiosInstance.get("/");
@@ -84,7 +82,9 @@ export default function Login() {
 
   }
   const onSubmit: SubmitHandler<LoginForm> = (data) => signIn(data);
-
+  if (user) {
+    return <Navigate to="/" />;
+  }
   return (
     <div >
       <Flex

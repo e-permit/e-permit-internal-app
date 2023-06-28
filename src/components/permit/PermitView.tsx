@@ -23,11 +23,11 @@ import {
 } from "@chakra-ui/react";
 import FlagIcon from "../icons/flags/FlagIcon";
 import { ReactNode, useEffect } from "react";
-import { useAuth } from "../auth/RequireAuth";
 import { useQuery } from "@tanstack/react-query";
 import { ViewIcon } from "@chakra-ui/icons";
 import ActivityList from "./ActivityList";
 import { AiOutlineFilePdf } from "react-icons/ai";
+import { useAuth } from "../../lib/useAuth";
 
 export interface PermitActivity {
   activity_type: string;

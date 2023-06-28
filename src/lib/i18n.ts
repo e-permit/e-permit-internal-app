@@ -1,14 +1,14 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import common from "./locales/en/common.json";
-import signin from "./locales/en/signin.json";
-import dashboard from "./locales/en/dashboard.json";
-import authority from "./locales/en/authority.json";
-import permit from "./locales/en/permit.json";
+import common from "../locales/en/common.json";
+import signin from "../locales/en/signin.json";
+import dashboard from "../locales/en/dashboard.json";
+import authority from "../locales/en/authority.json";
+import permit from "../locales/en/permit.json";
 
-import common_tr from "./locales/tr/common.json";
-import signin_tr from "./locales/tr/signin.json";
+import commonTr from "../locales/tr/common.json";
+import signinTr from "../locales/tr/signin.json";
 
 export const defaultNS = "common";
 export const resources = {
@@ -20,8 +20,8 @@ export const resources = {
     permit
   },
   tr: {
-    common: common_tr,
-    signin: signin_tr
+    common: commonTr,
+    signin: signinTr
   }
 };
 

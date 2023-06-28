@@ -1,6 +1,6 @@
-import FlagIcon from "../icons/flags/FlagIcon";
+import FlagIcon from "./icons/flags/FlagIcon";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import i18n from "../../i18n";
+import i18n from "../lib/i18n";
 import { useEffect, useState } from "react";
 
 const langs = [

@@ -1,13 +1,13 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
   Box,
   Button,
   Drawer,
   DrawerBody,
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   DrawerCloseButton,
   DrawerContent,
   DrawerFooter,
@@ -27,7 +27,7 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../auth/RequireAuth";
+import { useAuth } from "../../lib/useAuth";
 
 type CreateForm = {
   apiUri: string;

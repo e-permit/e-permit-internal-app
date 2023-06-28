@@ -16,13 +16,13 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../components/auth/RequireAuth";
 import CreateQuota from "../components/authority/CreateQuota";
 import FlagIcon from "../components/icons/flags/FlagIcon";
 import PermitList from "../components/permit/PermitList";
 import QuotaList from "../components/authority/QuotaList";
 import { PermitFilterProps } from "../lib/PermitFilterProps";
 import Truck from "../components/icons/Truck";
+import { useAuth } from "../lib/useAuth";
 
 
 export default function AuthorityDetails() {

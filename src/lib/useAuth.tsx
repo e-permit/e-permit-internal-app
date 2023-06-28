@@ -1,4 +1,3 @@
-import Login from "./Login";
 import { createContext, useContext, useEffect, useState } from "react";
 import localForage from "localforage";
 import { ReactNode } from "react";
@@ -22,7 +21,7 @@ export const AuthContext = createContext<{
   resolveAxios: () => AxiosInstance;
 }>({ user: null, setUser: () => null, resolveAxios: () => axios.create() });
 
-const RequireAuth = ({ children }: AuthProps) => {
+const AuthProvider = ({ children }: AuthProps) => {
   const STORE_KEY = "user";
   const [user, setUser] = useState<User | null>(null);
   async function fetchUser() {
@@ -52,14 +51,13 @@ const RequireAuth = ({ children }: AuthProps) => {
   }, [user]);
   return (
     <AuthContext.Provider value={{ user, setUser, resolveAxios }}>
-      {user ? children : <Login />}
+      {children}
     </AuthContext.Provider>
   );
 };
 
-export default RequireAuth;
+export default AuthProvider;
 
 export const useAuth = () => {
   return useContext(AuthContext);
 };
-

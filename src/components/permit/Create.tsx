@@ -27,7 +27,7 @@ import { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { PermitFilterProps } from "../../lib/PermitFilterProps";
-import { useAuth } from "../auth/RequireAuth";
+import { useAuth } from "../../lib/useAuth";
 
 type CreateForm = {
   plate_number: string;

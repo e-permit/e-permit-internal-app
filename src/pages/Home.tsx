@@ -12,7 +12,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/auth/RequireAuth";
+import { useAuth } from "../lib/useAuth";
 import CreateAuthority from "../components/authority/Create";
 import FlagIcon from "../components/icons/flags/FlagIcon";
 

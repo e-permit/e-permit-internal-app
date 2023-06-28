@@ -1,5 +1,4 @@
-import { Outlet } from "react-router-dom";
-import { useAuth } from "../components/auth/RequireAuth";
+import { Navigate, Outlet } from "react-router-dom";
 import { MdLogout, MdMoreVert } from "react-icons/md";
 
 import {
@@ -25,11 +24,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { MdSearch, MdSyncAlt } from "react-icons/md";
 import { RiAdminLine } from "react-icons/ri";
-import FlagIcon from "../components/icons/flags/FlagIcon";
+import FlagIcon from "./icons/flags/FlagIcon";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { useAuth } from "../lib/useAuth";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
@@ -39,6 +39,9 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const code = user?.code?.toLowerCase();
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>

@@ -2,7 +2,7 @@
 import { rest } from "msw";
 
 export const handlers = [
-  rest.get("/api", (req, res, ctx) => {
+  rest.get("/api", (req: any, res: any, ctx: any) => {
     const profile = {
       authority: "TR",
       authorities: ["UZ"],
@@ -11,17 +11,17 @@ export const handlers = [
     return res(ctx.json(profile));
   }),
   // Handles a POST /login request
-  rest.post("/api/authorities", (req, res, ctx) => {
+  rest.post("/api/authorities", (req: any, res: any, ctx: any) => {
     return res(ctx.status(400), ctx.json({ error_message: "Custom error" }));
     //window.localStorage.setItem("authorityCreated", "true");
     //return res(ctx.json({ code: "RU" }));
   }),
   // Handles a GET /user request
-  rest.get("/api/authorities/:code", (req, res, ctx) => {
+  rest.get("/api/authorities/:code", (req: any, res: any, ctx: any) => {
     const authority = {
-      code: "UZ",
-      api_uri: "https://epermit.gov.uz",
-      quotas: [
+      "code": "UZ",
+      "api_uri": "https://epermit.gov.uz",
+      "quotas": [
         {
           permit_issuer: "TR",
           permit_issued_for: "UZ",
@@ -35,7 +35,7 @@ export const handlers = [
     };
     return res(ctx.json(authority));
   }),
-  rest.get("/api/permits/find/:id", (req, res, ctx) => {
+  rest.get("/api/permits/find/:id", (req: any, res: any, ctx: any) => {
     return res(
       ctx.json({
         issuer: "UZ",
@@ -52,7 +52,7 @@ export const handlers = [
     );
   }),
 
-  rest.get("/api/permits", (req, res, ctx) => {
+  rest.get("/api/permits", (req: any, res: any, ctx: any) => {
     const page = req.url.searchParams.get('page')
     let content = [{
       permit_id: "TR-UZ-2022-1-1",
