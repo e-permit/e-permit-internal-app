@@ -23,15 +23,15 @@ export default ({ quotas, filter }: { quotas: AuthorityQuota[], filter: PermitFi
                 mb={"4"}
                 mt={"5"}
             >
-                {t("quota_list_label")}
+                {t("Quotas")}
             </Text>
             <Table>
                 <Thead>
                     <Tr>
-                        <Th key="start_number">{t("start_number_label")}</Th>
-                        <Th key="end_number">{t("end_number_label")}</Th>
-                        <Th key="used_quota">{t("used_quota_label")}</Th>
-                        <Th key="remain_quota">{t("remain_quota_label")}</Th>
+                        <Th key="start_number">{t("Start Number")}</Th>
+                        <Th key="end_number">{t("End Number")}</Th>
+                        <Th key="used_quota">{t("Used")}</Th>
+                        <Th key="remain_quota">{t("Remain")}</Th>
                         <Th key="command">{!filter.isOwner &&
                             <CreateQuota props={{
                                 permitType: filter.permitType,

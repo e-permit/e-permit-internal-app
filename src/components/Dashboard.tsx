@@ -35,7 +35,7 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
   const { user, setUser } = useAuth();
   const [validPermitId, setValidPermitId] = useState(false);
-  const { t } = useTranslation(["dashboard", "common"]);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const code = user?.code?.toLowerCase();
@@ -61,7 +61,7 @@ export default function Dashboard() {
                 >
                   <FlagIcon code={code} />{" "}
                   <Text as="b" display={{ base: "none", md: "flex" }}>
-                    {t(`common:country_name_${code}`).toUpperCase()}
+                    {t(`country.name.${code}`).toUpperCase()}
                   </Text>
                 </HStack>
               )}
@@ -76,7 +76,7 @@ export default function Dashboard() {
                 </InputLeftElement>
                 <Input
                   textTransform={searchValue ? "uppercase" : "initial"}
-                  placeholder={`${t("search_permit_text")}`}
+                  placeholder={`${t("Permit Number")}`}
                   onChange={(e) => {
                     const permitIdReg = /^([A-Z]{2}-[A-Z]{2}-20(2[2-9]|[3-9][0-9])-[1-6]-[1-9]{1}[0-9]*)$/;
                     const r = permitIdReg.test(
@@ -85,7 +85,7 @@ export default function Dashboard() {
                     setValidPermitId(r);
                     setSearchValue(e.currentTarget.value.toUpperCase());
                   }}
-                  onKeyPress={(e) => {
+                  onKeyDown={(e) => {
                     if (e.key === "Enter" && validPermitId) {
                       navigate(`/permits/${searchValue}`, { replace: true });
                       queryClient.invalidateQueries(["permit"]);
@@ -109,24 +109,10 @@ export default function Dashboard() {
                   setUser(null);
                   navigate("/");
                 }}>
-                  {t("signout_title")}
+                  {t("Sign Out")}
                 </MenuItem>
               </MenuList>
             </Menu>
-            {/*<Button
-              variant={"ghost"}
-              colorScheme="red"
-              leftIcon={<Icon as={MdLogout} />}
-              onClick={() => {
-                setUser(null);
-                navigate("/");
-              }}
-            >
-              <Text display={{ base: "none", md: "block" }}>
-                {t("common:signout_title")}
-              </Text>
-              
-            </Button>*/}
           </Flex>
         </Flex>
       </Box>

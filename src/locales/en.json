@@ -1,15 +1,6 @@
 {
-    "actions": {
-        "create": {
-            "authority_header_title": "New authority",
-            "authority_success_title": "Authority is created successfully",
-            "quota_header_title": "Create quota",
-            "quota_success_title": "Quota is created successfully",
-            "quota_button": "Create quota"
-        }
-    },
     "country": {
-        "names": {
+        "name": {
             "tr": "Türkiye",
             "uz": "Uzbekistan",
             "ua": "Ukraine",
@@ -19,7 +10,12 @@
         }
     },
     "permit": {
-        "labels": {
+        "type": {
+            "bilateral": "Bilateral",
+            "transit": "Transit",
+            "thirdcountry": "Third Country"
+        },
+        "label": {
             "id": "Permit identifier",
             "type": "Type of the permit",
             "year": "Year of the permit",
@@ -27,7 +23,9 @@
             "issued_for": "This permit issued for",
             "plate_number": "Plate number(s)",
             "issued_at": "This permit prepared on",
-            "expire_at": "This permit valid until"
+            "expire_at": "This permit valid until",
+            "company_name": "Company name",
+            "company_id": "Company id"
         }
     }
 }

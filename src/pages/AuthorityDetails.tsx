@@ -14,8 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import CreateQuota from "../components/authority/CreateQuota";
+import {  useParams } from "react-router-dom";
 import FlagIcon from "../components/icons/flags/FlagIcon";
 import PermitList from "../components/permit/PermitList";
 import QuotaList from "../components/authority/QuotaList";
@@ -72,7 +71,7 @@ export default function AuthorityDetails() {
             textTransform={"uppercase"}
             mb={"1"}
           >
-            {t(`country.names.${data.code.toLowerCase()}`)}
+            {t(`country.name.${data.code.toLowerCase()}`)}
           </Text>
           <Hide below='sm'><Code>{data.api_uri}</Code></Hide>
         </HStack>

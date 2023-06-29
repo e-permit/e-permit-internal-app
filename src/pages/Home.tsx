@@ -25,7 +25,7 @@ export default function Home() {
   };
   const { data, error, isFetching } = useQuery(["profile"], () => getProfile());
   if (isFetching) return <Spinner />;
-  if (error) return <div>Error</div>;
+  if (error) return <div>{t("Api error")}</div>;
   return (
     <Box mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       <Text
@@ -35,7 +35,7 @@ export default function Home() {
         textTransform={"uppercase"}
         mb={"4"}
       >
-        Welcome to e-permit app <CreateAuthority />
+       {t("Welcome to e-permit app")} <CreateAuthority />
       </Text>
       <Divider my={"20px"} />
       <List spacing={3}>
@@ -52,7 +52,7 @@ export default function Home() {
               code={authority.toLowerCase()}
             />
             <Text ml={"10px"} as="span">
-              {t(`country_name_${authority.toLowerCase()}`).toUpperCase()}
+              {t(`country.name.${authority.toLowerCase()}`).toUpperCase()}
             </Text>
           </ListItem>
         ))}

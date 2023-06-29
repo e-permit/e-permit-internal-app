@@ -71,11 +71,11 @@ export default function Login() {
         };
         setUser(user);
       } else if (res.status === 401) {
-        setError("root", { message: t("errors.login.unathorized") });
+        setError("root", { message: t("Unauthorized") });
       }
     } catch (e) {
       console.error("Error occured!" + JSON.stringify(e));
-      setError("root", { message: t("errors.login.unexpected") });
+      setError("root", { message: t("An error has occured") });
     }
 
   }

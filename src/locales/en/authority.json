@@ -1,10 +1,5 @@
 {
-    "create_new_authority_header": "Create a new authority",
-    "create_new_authority_success_description":"Authority is created successfully",
-    "create_new_quota_header": "Create quota",
-    "create_new_quota_success_description":"Quota is created successfully",
-    "create_quota_button_label": "Create quota",
-    "quota_input_label": "Quota",
+   
     "api_uri_title": "epermit api endpoint",
     "quota_list_label": "Quotas",
     "start_number_label": "Start Number",

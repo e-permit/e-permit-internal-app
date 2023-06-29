@@ -24,38 +24,38 @@ type Permit = {
 }
 
 export default ({ props }: { props: PermitFilterProps }) => {
-    const { t } = useTranslation(["permit"]);
+    const { t } = useTranslation();
     const { resolveAxios } = useAuth();
     const columns = useMemo<ColumnDef<Permit>[]>(
         () => [{
             accessorKey: 'permit_id',
-            header: () => <span>{t("permit_id_label")}</span>,
+            header: () => <span>{t("permit.label.id")}</span>,
             width: 240,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'issued_at',
-            header: () => <span>{t("issued_at_label")}</span>,
+            header: () => <span>{t("permit.label.issued_at")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'expire_at',
-            header: () => <span>{t("expire_at_label")}</span>,
+            header: () => <span>{t("permit.label.expire_at")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'plate_number',
-            header: () => <span>{t("plate_number_label")}</span>,
+            header: () => <span>{t("permit.label.plate_number")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'company_name',
-            header: () => <span>{t("company_name_label")}</span>,
+            header: () => <span>{t("permit.label.company_name")}</span>,
             footer: props => props.column.id,
         },
         {
             accessorKey: 'company_id',
-            header: () => <span>{t("company_id_label")}</span>,
+            header: () => <span>{t("permit.label.company_id")}</span>,
             footer: props => props.column.id,
         },
         {
@@ -120,7 +120,7 @@ export default ({ props }: { props: PermitFilterProps }) => {
             mb={"4"}
             mt={"5"}
         >
-            {t("permit_list_label")}
+            {t("Permits")}
         </Text>
         <Table>
             <Thead>
@@ -158,7 +158,7 @@ export default ({ props }: { props: PermitFilterProps }) => {
         </Table>
         <Flex justifyContent="space-between" m={4} alignItems="center">
             <Flex>
-                <Tooltip label={t("previous_page_text")}>
+                <Tooltip label={t("Previous Page")}>
                     <IconButton
                         aria-label="prev"
                         onClick={() => table.previousPage()}
@@ -189,7 +189,7 @@ export default ({ props }: { props: PermitFilterProps }) => {
             </Flex>
 
             <Flex>
-                <Tooltip label={t("next_page_text")}>
+                <Tooltip label={t("Next Page")}>
                     <IconButton
                         aria-label="next"
                         onClick={() => table.nextPage()}
