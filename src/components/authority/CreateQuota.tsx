@@ -17,6 +17,7 @@ import {
   FormErrorMessage,
   FormLabel,
   IconButton,
+  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -34,8 +35,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../lib/useAuth";
 
 type CreateForm = {
-  quota: number;
-  serverError: void;
+  quota: string;
 };
 
 type CreateQuotaProps = {
@@ -48,7 +48,7 @@ export default function CreateQuota({ props }: { props: CreateQuotaProps }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { resolveAxios } = useAuth();
   const toast = useToast();
-  const { t } = useTranslation("authority");
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const {
     register,
@@ -57,20 +57,30 @@ export default function CreateQuota({ props }: { props: CreateQuotaProps }) {
     handleSubmit,
     formState: { errors }
   } = useForm<CreateForm>();
-  const createQuota = async (quota: number) => {
-    return await resolveAxios().post("/authority_quotas/add", {
-      quantity: quota,
+  const createQuota = async (quota: string) => {
+    let url = "";
+    let data: any = {
       authority_code: props.authorityCode,
       permit_type: props.permitType,
       permit_year: props.permitYear
-    });
+    };
+    if (quota.includes("-")) {
+      const parts = quota.split("-");
+      data.start_number = Number(parts[0]);
+      data.end_number = Number(parts[1]);
+      url = "/authority_quotas";
+    } else {
+      data.quantity = Number(quota);
+      url = "/authority_quotas/add";
+    }
+    return await resolveAxios().post(url, data);
   };
   const newQuota = useMutation<any, AxiosError, any>(createQuota, {
     onSuccess: (data) => {
       queryClient.refetchQueries(["authority"]);
       toast({
-        title: t("common:success_title"),
-        description: t("create_new_quota_success_description"),
+        title: t("Success"),
+        description: t("Quota is created successfully"),
         status: "success",
         duration: 9000,
         isClosable: true
@@ -79,13 +89,27 @@ export default function CreateQuota({ props }: { props: CreateQuotaProps }) {
       onClose();
     },
     onError: (error) => {
-      console.log("400 Error: ", JSON.stringify(error), error.response?.data);
-      setError("serverError", { message: t("common:server_error_message") });
+      if (error.response?.status == 400) {
+        setError("root", { message: t("Bad Request") });
+      } else if (error.response?.status == 422) {
+        setError("root", { message: 
+          `${t("Validation Error")} Details: ${(error.response!.data as any).details.errorCode}` });
+      } else if (error.response?.status == 500) {
+        setError("root", { message: t("An error has occured") });
+      } else {
+        setError("root", { message: t("An error has occured") });
+      }
     }
   });
 
   const onSubmit: SubmitHandler<CreateForm> = (data) => {
-    newQuota.mutate(data.quota);
+    const quotaReg = /^\d+(?:-\d+)?$/;
+    const r = quotaReg.test(data.quota);
+    if (!r) {
+      setError("quota", { message: t("Quota should be number or range") });
+    }else{
+      newQuota.mutate(data.quota);
+    }
   };
 
   return (
@@ -96,13 +120,13 @@ export default function CreateQuota({ props }: { props: CreateQuotaProps }) {
         maxW={50}
         colorScheme="teal"
         onClick={onOpen}
-      ><Tooltip label={t("create_quota_button_label")} color='white'><AddIcon /></Tooltip></IconButton>
+      ><Tooltip label={t("New Quota")} color='white'><AddIcon /></Tooltip></IconButton>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">
-            {t("create_new_quota_header")}
+            {t("New Quota")}
           </DrawerHeader>
 
           <DrawerBody>
@@ -114,24 +138,18 @@ export default function CreateQuota({ props }: { props: CreateQuotaProps }) {
               <Stack spacing="24px">
                 <Box mt={10}>
                   <FormControl isInvalid={!!errors.quota?.message}>
-                    <FormLabel htmlFor="quota">{t("quota_input_label")}</FormLabel>
-                    <NumberInput min={1} >
-                      <NumberInputField {...register("quota", { required: t("quota_required_message") })} />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
+                    <FormLabel htmlFor="quota">{t("Quota")}</FormLabel>
+                    <Input id="quota" {...register("quota", { required: t("Quota is required") })} />
                     <FormErrorMessage>
                       {errors.quota && errors.quota?.message}
                     </FormErrorMessage>
                   </FormControl>
-                  {errors.serverError && (
+                  {errors.root && (
                     <Alert status="error" mt={"20px"}>
                       <AlertIcon />
-                      <AlertTitle>Server Error</AlertTitle>
+                      <AlertTitle>{t("Server Error")}</AlertTitle>
                       <AlertDescription>
-                        {errors.serverError.message}
+                        {t(errors.root.message!)}
                       </AlertDescription>
                     </Alert>
                   )}
@@ -143,10 +161,10 @@ export default function CreateQuota({ props }: { props: CreateQuotaProps }) {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={() => { reset(); onClose(); }} >
-              {t("common:create_new_cancel")}
+              {t("Cancel")}
             </Button>
             <Button type="submit" colorScheme="blue" isLoading={newQuota.isLoading} form="create-quota">
-              {t("common:create_new_submit")}
+              {t("Create")}
             </Button>
           </DrawerFooter>
         </DrawerContent>

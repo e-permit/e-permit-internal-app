@@ -16,7 +16,6 @@ import {
   FormLabel,
   IconButton,
   Input,
-  Select,
   Stack,
   Tooltip,
   useDisclosure,
@@ -33,14 +32,13 @@ type CreateForm = {
   plate_number: string;
   company_name: string;
   company_id: string;
-  serverError: void;
 };
 
 export default ({ props }: { props: PermitFilterProps }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { resolveAxios } = useAuth();
   const toast = useToast();
-  const { t } = useTranslation("permit");
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const {
     register,
@@ -63,8 +61,8 @@ export default ({ props }: { props: PermitFilterProps }) => {
     onSuccess: (data) => {
       queryClient.refetchQueries(["permits"]);
       toast({
-        title: t("common:success_title"),
-        description: t("create_new_permit_success_description"),
+        title: t("Success"),
+        description: t("Permit is created successfully"),
         status: "success",
         duration: 9000,
         isClosable: true
@@ -73,8 +71,16 @@ export default ({ props }: { props: PermitFilterProps }) => {
       onClose();
     },
     onError: (error) => {
-      console.log("400 Error: ", JSON.stringify(error), error.response?.data);
-      setError("serverError", { message: t("common:server_error_message") });
+      if (error.response?.status == 400) {
+        setError("root", { message: t("Bad Request") });
+      } else if (error.response?.status == 422) {
+        setError("root", { message: 
+          `${t("Validation Error")} Details: ${(error.response!.data as any).details.errorCode}` });
+      } else if (error.response?.status == 500) {
+        setError("root", { message: t("An error has occured") });
+      } else {
+        setError("root", { message: t("An error has occured") });
+      }
     }
   });
 
@@ -91,13 +97,13 @@ export default ({ props }: { props: PermitFilterProps }) => {
         maxW={50}
         colorScheme="teal"
         onClick={onOpen}
-      ><Tooltip label={t("permit:create_permit_button_label")} color='white'><AddIcon /></Tooltip></IconButton>
+      ><Tooltip label={t("New Permit")} color='white'><AddIcon /></Tooltip></IconButton>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">
-            {t("permit:create_permit_button_label")}
+            {t("New Permit")}
           </DrawerHeader>
 
           <DrawerBody>
@@ -108,24 +114,24 @@ export default ({ props }: { props: PermitFilterProps }) => {
             >
               <Stack spacing="24px">
                 <Box>
-                  <FormLabel htmlFor="plate_number">{t("permit:plate_number_label")}</FormLabel>
-                  <Input id="plate_number" {...register("plate_number", { required: t("plate_number_required_message") })} />
+                  <FormLabel htmlFor="plate_number">{t("permit.label.plate_number")}</FormLabel>
+                  <Input id="plate_number" {...register("plate_number", { required: t("Plate number is required") })} />
                 </Box>
                 <Box>
-                  <FormLabel htmlFor="company_name">{t("permit:company_name_label")}</FormLabel>
-                  <Input id="company_name" {...register("company_name", { required: t("company_name_required_message") })} />
+                  <FormLabel htmlFor="company_name">{t("permit.label.company_name")}</FormLabel>
+                  <Input id="company_name" {...register("company_name", { required: t("Company name is required") })} />
                 </Box>
                 <Box>
-                  <FormLabel htmlFor="company_id">{t("permit:company_id_label")}</FormLabel>
-                  <Input id="company_id" {...register("company_id", { required: t("company_id_required_message") })} />
+                  <FormLabel htmlFor="company_id">{t("permit.label.company_id")}</FormLabel>
+                  <Input id="company_id" {...register("company_id", { required: t("Company id is required") })} />
                 </Box>
               </Stack>
-              {errors.serverError && (
+              {errors.root && (
                 <Alert status="error" mt={"20px"}>
                   <AlertIcon />
-                  <AlertTitle>Server Error</AlertTitle>
+                  <AlertTitle>{t("Server Error")}</AlertTitle>
                   <AlertDescription>
-                    {errors.serverError.message}
+                    {t(errors.root.message!)}
                   </AlertDescription>
                 </Alert>
               )}
@@ -134,10 +140,10 @@ export default ({ props }: { props: PermitFilterProps }) => {
 
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={() => { reset(); onClose(); }} >
-              {t("common:create_new_cancel")}
+              {t("Cancel")}
             </Button>
             <Button type="submit" colorScheme="blue" isLoading={newPermit.isLoading} form="create-permit">
-              {t("common:create_new_submit")}
+              {t("Create")}
             </Button>
           </DrawerFooter>
         </DrawerContent>

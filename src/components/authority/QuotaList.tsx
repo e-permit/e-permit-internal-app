@@ -10,7 +10,7 @@ export type AuthorityQuota = {
 }
 
 export default ({ quotas, filter }: { quotas: AuthorityQuota[], filter: PermitFilterProps }) => {
-    const { t } = useTranslation(["authority"]);
+    const { t } = useTranslation();
     quotas = quotas.sort((a, b) => a.end_number - b.end_number);
     return (
         <Box>
@@ -28,8 +28,8 @@ export default ({ quotas, filter }: { quotas: AuthorityQuota[], filter: PermitFi
             <Table>
                 <Thead>
                     <Tr>
-                        <Th key="start_number">{t("Start Number")}</Th>
-                        <Th key="end_number">{t("End Number")}</Th>
+                        <Th key="start_number">{t("Start")}</Th>
+                        <Th key="end_number">{t("End")}</Th>
                         <Th key="used_quota">{t("Used")}</Th>
                         <Th key="remain_quota">{t("Remain")}</Th>
                         <Th key="command">{!filter.isOwner &&

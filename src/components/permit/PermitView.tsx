@@ -99,6 +99,7 @@ export function PermitViewModal({ id }: { id: string | undefined }) {
 export default function PermitView({ id, inModal }: { id: string | undefined, inModal: boolean }) {
 
   const { resolveAxios } = useAuth();
+  const { t } = useTranslation();
 
   const getPermit = async (id: string | undefined) => {
     const { data } = await resolveAxios()?.get(`/permits/find/${id}`);
@@ -115,19 +116,19 @@ export default function PermitView({ id, inModal }: { id: string | undefined, in
     getPdf(id)
   );
 
-  if (error) return <div>Request Failed</div>;
+  if (error) return <div>{t("Request Failed")}</div>;
   if (isFetching || pdf.isFetching) return <Spinner />;
   return <>
     <PermitInfo permit={{ ...data, inModal }} />
     {pdf.data && <Link color='teal.500' href={pdf.data} download={`${id}.pdf`}>
-      <HStack spacing='4px' my={5}><AiOutlineFilePdf /><Text>Download Pdf</Text></HStack>
+      <HStack spacing='4px' my={5}><AiOutlineFilePdf /><Text>{t("Download Pdf")}</Text></HStack>
     </Link>}
-    {pdf.error && <div>{JSON.stringify(pdf.error)}</div>}
+    {pdf.error && <div>{t("Pdf Error")}</div>}
     <ActivityList activities={data.activities} /></>;
 }
 
 export function PermitInfo({ permit }: { permit: PermitViewProps }) {
-  const { t } = useTranslation(["permit", "common"]);
+  const { t } = useTranslation();
   const columns = permit.inModal ? 2 : 4;
   return <Box maxW="7xl" mx={"auto"} pt={5}>
     <Box>
@@ -138,18 +139,18 @@ export function PermitInfo({ permit }: { permit: PermitViewProps }) {
         textTransform={"uppercase"}
         mb={"4"}
       >
-        {t("permit_details_label")}
+        {t("Permit Details")}
       </Text>
       <Divider mb={"4"} />
       <List spacing={2}>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("issuer_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.issuer")}</PermitLabel>
             <Box>
               <HStack spacing="10px">
                 <FlagIcon code={permit.issuer.toLowerCase()} />
                 <Text as={"span"}>
-                  {t(`common:country_name_${permit.issuer.toLowerCase()}`)}
+                  {t(`country.name.${permit.issuer.toLowerCase()}`)}
                 </Text>
               </HStack>
             </Box>
@@ -157,12 +158,12 @@ export function PermitInfo({ permit }: { permit: PermitViewProps }) {
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("issued_for_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.issued_for")}</PermitLabel>
             <Box>
               <HStack spacing="10px">
                 <FlagIcon code={permit.issued_for.toLowerCase()} />
                 <Text as={"span"}>
-                  {t(`common:country_name_${permit.issued_for.toLowerCase()}`)}
+                  {t(`country.name.${permit.issued_for.toLowerCase()}`)}
                 </Text>
               </HStack>
             </Box>
@@ -170,51 +171,51 @@ export function PermitInfo({ permit }: { permit: PermitViewProps }) {
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("permit_id_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.id")}</PermitLabel>
             <Text as={"span"}>{permit.permit_id}</Text>
           </SimpleGrid>
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("plate_number_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.plate_number")}</PermitLabel>
             <Text as={"span"}>{permit.plate_number}</Text>
           </SimpleGrid>
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("permit_type_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.type")}</PermitLabel>
             <Text as={"span"}>
-              {t(`permit_type_${permit.permit_type.toLowerCase()}_text`)}
+              {t(`permit.type.${permit.permit_type.toLowerCase()}`)}
             </Text>
           </SimpleGrid>
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("permit_year_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.permit_year")}</PermitLabel>
             <Text as={"span"}>{permit.permit_year}</Text>
           </SimpleGrid>
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("issued_at_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.issued_at")}</PermitLabel>
             <Text as={"span"}>{permit.issued_at}</Text>
           </SimpleGrid>
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("expire_at_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.expire_at")}</PermitLabel>
             <Text as={"span"}>{permit.expire_at}</Text>
           </SimpleGrid>
         </ListItem>
         <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("company_name_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.company_name")}</PermitLabel>
             <Text as={"span"}>{permit.company_name}</Text>
           </SimpleGrid>
         </ListItem>
         {permit.company_id && <ListItem>
           <SimpleGrid columns={columns}>
-            <PermitLabel>{t("company_id_label")}</PermitLabel>
+            <PermitLabel>{t("permit.label.company_id")}</PermitLabel>
             <Text as={"span"}>{permit.company_id}</Text>
           </SimpleGrid>
         </ListItem>}

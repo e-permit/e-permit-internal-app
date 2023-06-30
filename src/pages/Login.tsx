@@ -150,7 +150,7 @@ export default function Login() {
                       bg: "blue.500"
                     }}
                   >
-                    {t("Sign in")}
+                    {t("Sign In")}
                   </Button>
                 </Stack>
               </Stack>

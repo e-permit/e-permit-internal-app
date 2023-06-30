@@ -20,48 +20,27 @@ import { MdLogin, MdLogout } from "react-icons/md";
 
 import React from "react";
 import { PermitActivity } from "./PermitView";
+import { useTranslation } from "react-i18next";
 
 
 function AddActivity() {
+  const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef(null)
   return (
     <>
       <Box mt={10}>
-        <Button onClick={onOpen} mr={5} colorScheme='green' variant='solid' leftIcon={<MdLogin />}> Enter</Button>
-        <Button onClick={onOpen} colorScheme='red' variant='solid' leftIcon={<MdLogout />}>Exit</Button></Box>
-      <AlertDialog
-        motionPreset='slideInBottom'
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isOpen={isOpen}
-        isCentered
-      >
-        <AlertDialogOverlay />
-
-        <AlertDialogContent>
-          <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
-            Are you sure you want to discard all of your notes? 44 words will be
-            deleted.
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              No
-            </Button>
-            <Button colorScheme='red' ml={3}>
-              Yes
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <Button onClick={onOpen} mr={5} colorScheme='green' variant='solid' leftIcon={<MdLogin />}> {t("Enter")}</Button>
+        <Button onClick={onOpen} colorScheme='red' variant='solid' leftIcon={<MdLogout />}>{t("Exit")}</Button>
+      </Box>
     </>
   )
 }
 
 
 export default function ActivityList({ activities }: { activities: PermitActivity[] }) {
+  const { t } = useTranslation();
+
   return (
     <Box maxW="md">
       <Text
@@ -80,12 +59,12 @@ export default function ActivityList({ activities }: { activities: PermitActivit
           if (act.activity_type === "ENTER") {
             return (
               <ListItem color="green.500">
-                <ListIcon as={MdLogin} /> [ENTER] {act.activity_timestamp}
+                <ListIcon as={MdLogin} /> [{t("ENTER")}] {act.activity_timestamp}
               </ListItem>);
           } else {
             return (
               <ListItem color="red.500">
-                <ListIcon as={MdLogout} /> [EXIT] {act.activity_timestamp}
+                <ListIcon as={MdLogout} /> [{t("EXIT")}] {act.activity_timestamp}
               </ListItem>);
           }
         })}

@@ -38,7 +38,7 @@ export default function CreateAuthority() {
   const { resolveAxios } = useAuth();
   const axios = resolveAxios();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { t } = useTranslation(["authority"]);
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const {
     register,
@@ -55,8 +55,8 @@ export default function CreateAuthority() {
     onSuccess: (data) => {
       queryClient.refetchQueries(["profile"]);
       toast({
-        title: t("common:success_title"),
-        description: t("create_new_authority_success_description"),
+        title: t("Success"),
+        description: t("Authority is created successfully"),
         status: "success",
         duration: 9000,
         isClosable: true
@@ -65,9 +65,16 @@ export default function CreateAuthority() {
       onClose();
     },
     onError: (error) => {
-      // 400 422 500
-      console.log("400 Error: ", JSON.stringify(error), error.response?.data);
-      setError("root", { message: t("common:server_error_message") });
+      if (error.response?.status == 400) {
+        setError("root", { message: t("Bad Request") });
+      } else if (error.response?.status == 422) {
+        setError("root", { message: 
+          `${t("Validation Error")} Details: ${(error.response!.data as any).details.errorCode}` });
+      } else if (error.response?.status == 500) {
+        setError("root", { message: t("An error has occured") });
+      } else {
+        setError("root", { message: t("An error has occured") });
+      }
     }
   });
 
@@ -89,7 +96,7 @@ export default function CreateAuthority() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">
-            {t("create_new_authority_header")}
+            {t("New Authority")}
           </DrawerHeader>
 
           <DrawerBody>
@@ -108,9 +115,9 @@ export default function CreateAuthority() {
                         onClick={() => setIsHttps(!isHttps)}
                       />
                       <Input
-                        placeholder={t("api_uri_title")}
+                        placeholder={t("Api Address")}
                         {...register("apiUri", {
-                          required: t("api_uri_required_message")
+                          required: t("Api address is required")
                         })}
                       />
                     </InputGroup>
@@ -121,9 +128,9 @@ export default function CreateAuthority() {
                   {errors.root && (
                     <Alert status="error" mt={"20px"}>
                       <AlertIcon />
-                      <AlertTitle>Server Error</AlertTitle>
+                      <AlertTitle>{t("Server error")}</AlertTitle>
                       <AlertDescription>
-                        {errors.root.message}
+                        {t(errors.root.message!)}
                       </AlertDescription>
                     </Alert>
                   )}
@@ -141,7 +148,7 @@ export default function CreateAuthority() {
                 onClose();
               }}
             >
-              {t("common:create_new_cancel")}
+              {t("Cancel")}
             </Button>
             <Button
               type="submit"
@@ -149,7 +156,7 @@ export default function CreateAuthority() {
               isLoading={newAuthority.isLoading}
               form="create-authority"
             >
-              {t("common:create_new_submit")}
+              {t("Create")}
             </Button>
           </DrawerFooter>
         </DrawerContent>
